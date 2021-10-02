@@ -15,6 +15,8 @@ function game(){
     if (!canvas.getContext) {
         window.console.log("Error: canvas-unsupported");
     }
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
 
     const { width, height } = canvas.getBoundingClientRect();
     const maxX = 16;
@@ -22,6 +24,9 @@ function game(){
     const dx = Math.floor(width/maxX);
     const dy = Math.floor(height/maxY);
     const ctx = canvas.getContext("2d");
+
+    window.console.log("canvas.width", canvas.width, "canvas.height", canvas.height);
+    window.console.log("width", width, "height", height);
 
     draw(ctx, dx, dy, maxX, maxY);
     // window.console.log(ctx, dx, dy, maxX, maxY);
