@@ -2,11 +2,11 @@ const gameStates = {
     totalMoneyElem: null,
     totalMoney: 0,
     work: [
-        { name: "Work 1", amount: 1, auto: false },
-        { name: "Work 2", amount: 2, auto: false },
-        { name: "Work 3", amount: 3, auto: false },
-        { name: "Work 4", amount: 4, auto: false },
-        { name: "Work 5", amount: 5, auto: false },
+        { name: "Work 1", amount: 1, auto: true, bought: true },
+        { name: "Work 2", amount: 2, auto: false, bought: false },
+        { name: "Work 3", amount: 3, auto: false, bought: false },
+        { name: "Work 4", amount: 4, auto: false, bought: false },
+        { name: "Work 5", amount: 5, auto: false, bought: false },
     ]
 };
 
@@ -44,6 +44,15 @@ toggleAuto = (index) => {
     gameStates.work[index].auto = checkbox.checked;
 }
 
+buyWork = (index) => {
+    gameStates.work[index].auto = true;
+    gameStates.work[index].bought = true;
+    const buyLink = document.getElementById(`buy${index}`);
+    if (buyLink) {
+        buyLink.style.display = 'none';
+    }
+}
+
 clickerLoop = () => {
     gameStates.work.forEach((w) => {
         if (w.auto){
@@ -56,6 +65,17 @@ clickerLoop = () => {
 main = () => {
     gameStates.totalMoneyElem = document.getElementsByClassName("money")[0];
     displayTotalMoney();
+    
+    // Hide buy links for already bought works
+    gameStates.work.forEach((work, index) => {
+        if (work.bought) {
+            const buyLink = document.getElementById(`buy${index}`);
+            if (buyLink) {
+                buyLink.style.display = 'none';
+            }
+        }
+    });
+    
     clickerLoop();
 }
 
