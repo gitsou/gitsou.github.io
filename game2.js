@@ -39,6 +39,11 @@ work5 = () => {
     doWork(gameStates.work[4]);
 }
 
+toggleAuto = (index) => {
+    const checkbox = document.getElementById(`auto${index}`);
+    gameStates.work[index].auto = checkbox.checked;
+}
+
 clickerLoop = () => {
     gameStates.work.forEach((w) => {
         if (w.auto){

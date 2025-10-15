@@ -16,12 +16,27 @@
     <p>
         Money: <strong class="money">0</strong>$
     </p>
-    <div>
-        <button type="button" onclick="work1()">Work 1</button>
-        <button type="button" onclick="work2()">Work 2</button>
-        <button type="button" onclick="work3()">Work 3</button>
-        <button type="button" onclick="work4()">Work 4</button>
-        <button type="button" onclick="work5()">Work 5</button>
+    <div class="work-buttons">
+        <div class="work-item">
+            <button type="button" onclick="work1()">Work 1</button>
+            <label><input type="checkbox" id="auto0" onchange="toggleAuto(0)"> Auto</label>
+        </div>
+        <div class="work-item">
+            <button type="button" onclick="work2()">Work 2</button>
+            <label><input type="checkbox" id="auto1" onchange="toggleAuto(1)"> Auto</label>
+        </div>
+        <div class="work-item">
+            <button type="button" onclick="work3()">Work 3</button>
+            <label><input type="checkbox" id="auto2" onchange="toggleAuto(2)"> Auto</label>
+        </div>
+        <div class="work-item">
+            <button type="button" onclick="work4()">Work 4</button>
+            <label><input type="checkbox" id="auto3" onchange="toggleAuto(3)"> Auto</label>
+        </div>
+        <div class="work-item">
+            <button type="button" onclick="work5()">Work 5</button>
+            <label><input type="checkbox" id="auto4" onchange="toggleAuto(4)"> Auto</label>
+        </div>
     </div>
 
     <script src="game2.js"></script>
