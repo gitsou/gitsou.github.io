@@ -14,3 +14,25 @@
 .work-item button {
     min-width: 100px;
 }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+button:enabled {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.red-btn {
+  background-color: red;
+  color: white;
+}
+.yellow-btn {
+  background-color: yellow;
+  color: black;
+}
+.green-btn {
+  background-color: green;
+  color: white;
+}
