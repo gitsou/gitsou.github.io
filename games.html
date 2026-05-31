@@ -6,31 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games</title>
     <meta name="description" content="Games Jacek Ziemiański, software developer.">
+    <link rel="stylesheet" href="site.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="index.html">Blog</a>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="index.html">Jacek Ziemiański</a>
+            <a href="index.html">Home</a>
             <span aria-current="page">Games</span>
             <a href="links.html">Links</a>
             <a href="about.html">About</a>
         </nav>
     </header>
-    <main>
-        <article>
+    <main class="page">
+        <section class="intro">
+            <p class="eyebrow">Experiments</p>
             <h1>Games</h1>
-            <p> My experiments with games creation</p>
-            <article>
-                <h2>First Game</h2>
-                <p><a href="game1.html">Game1</a> this is the first game.</p>
+            <p class="lead">Small browser-based projects used for learning and experimentation.</p>
+        </section>
+
+        <div class="item-grid">
+            <article class="item-card">
+                <h2><a href="game1.html">Canvas Grid</a></h2>
+                <p>An early canvas experiment with clickable fields.</p>
+                <p class="meta">Plain JavaScript, canvas</p>
             </article>
-            <article>
-                <h2>Second Game</h2>
-                <p><a href="game2.html">Game2</a> this is the second game.</p>
+            <article class="item-card">
+                <h2><a href="game2.html">Clicker Game</a></h2>
+                <p>A small incremental game with work upgrades and automation.</p>
+                <p class="meta">Plain JavaScript, DOM</p>
             </article>
-        </article>
+        </div>
     </main>
-    <footer>
+    <footer class="site-footer">
         <p>Created by Jacek Ziemiański. &copy; 2025</p>
     </footer>
 </body>

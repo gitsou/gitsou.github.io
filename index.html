@@ -4,32 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
-    <meta name="description" content="Blog Jacek Ziemiański, software developer.">
+    <title>Jacek Ziemiański</title>
+    <meta name="description" content="Personal website of Jacek Ziemiański, software developer.">
+    <link rel="stylesheet" href="site.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <span aria-current="page">Blog</span>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="index.html">Jacek Ziemiański</a>
+            <span aria-current="page">Home</span>
             <a href="games.html">Games</a>
             <a href="links.html">Links</a>
             <a href="about.html">About</a>
         </nav>
     </header>
-    <main>
-        <h1>Blog</h1>
-        <article>
-            <h2>Creating Blog Web Page</h2>
-            <time datetime="2023-06-03">September 16, 2025</time>
-            <p> I have decided to create my web page. This is just a start. The page will be just simple html.</p>
-        </article>
-        <article>
-            <h2>Test 1</h2>
-            <time datetime="2025-06-03">June 3, 2025</time>
-            <p> Test content</p>
-        </article>
+    <main class="page">
+        <section class="intro">
+            <p class="eyebrow">Software developer</p>
+            <h1>Personal website and small experiments.</h1>
+            <p class="lead">This is a simple static place for notes, links, games, and web experiments hosted on GitHub Pages.</p>
+        </section>
+
+        <section class="section" aria-labelledby="projects-heading">
+            <h2 id="projects-heading">Experiments</h2>
+            <div class="item-grid">
+                <article class="item-card">
+                    <h3><a href="game1.html">Canvas Grid</a></h3>
+                    <p>A small canvas experiment with an interactive grid.</p>
+                    <p class="meta">Status: prototype</p>
+                </article>
+                <article class="item-card">
+                    <h3><a href="game2.html">Clicker Game</a></h3>
+                    <p>A tiny incremental game about buying work and automation.</p>
+                    <p class="meta">Status: in progress</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="notes-heading">
+            <h2 id="notes-heading">Notes</h2>
+            <article class="item-card">
+                <h3>Creating this website</h3>
+                <p class="meta"><time datetime="2025-09-16">September 16, 2025</time></p>
+                <p>I decided to create my own web page. The first version is intentionally simple HTML.</p>
+            </article>
+        </section>
     </main>
-    <footer>
+    <footer class="site-footer">
         <p>Created by Jacek Ziemiański. &copy; 2025</p>
     </footer>
 </body>

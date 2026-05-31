@@ -7,37 +7,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game2</title>
 
+    <link rel="stylesheet" href="site.css">
     <link rel="stylesheet" href="game2.css">
 </head>
 
 <body>
-    <h1>Game2</h1>
-    <h2>The Clicker Game</h2>
-    <p>
-        Money: <strong class="money">0</strong>$
-    </p>
-    <div class="work-buttons">
-        <div class="work-item">
-            <button type="button" id="button0" onclick="work(0)">Work 1</button>
-            <a href="#" id="buy0" onclick="buyWork(0); return false;">Buy</a>
-        </div>
-        <div class="work-item">
-            <button type="button" id="button1" onclick="work(1)">Work 2</button>
-            <a href="#" id="buy1" onclick="buyWork(1); return false;">Buy</a>
-        </div>
-        <div class="work-item">
-            <button type="button" id="button2" onclick="work(2)">Work 3</button>
-            <a href="#" id="buy2" onclick="buyWork(2); return false;">Buy</a>
-        </div>
-        <div class="work-item">
-            <button type="button" id="button3" onclick="work(3)">Work 4</button>
-            <a href="#" id="buy3" onclick="buyWork(3); return false;">Buy</a>
-        </div>
-        <div class="work-item">
-            <button type="button" id="button4" onclick="work(4)">Work 5</button>
-            <a href="#" id="buy4" onclick="buyWork(4); return false;">Buy</a>
-        </div>
-    </div>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="index.html">Jacek Ziemiański</a>
+            <a href="index.html">Home</a>
+            <a href="games.html" aria-current="page">Games</a>
+            <a href="links.html">Links</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="game-shell">
+        <section class="intro">
+            <p class="eyebrow">Experiment</p>
+            <h1>Clicker Game</h1>
+            <p class="lead">Earn money, buy better work, then automate the work you already own.</p>
+        </section>
+
+        <section class="game-panel" aria-labelledby="work-heading">
+            <h2 id="work-heading">Work</h2>
+            <p class="money-row">
+                Money: <strong class="money">0</strong>$
+            </p>
+            <div class="work-buttons">
+                <div class="work-item">
+                    <button type="button" id="button0" onclick="work(0)">Work 1</button>
+                    <a href="#" id="auto0" onclick="buyAuto(0); return false;">Auto</a>
+                    <a href="#" id="buy0" onclick="buyWork(0); return false;">Buy</a>
+                </div>
+                <div class="work-item">
+                    <button type="button" id="button1" onclick="work(1)">Work 2</button>
+                    <a href="#" id="auto1" onclick="buyAuto(1); return false;">Auto</a>
+                    <a href="#" id="buy1" onclick="buyWork(1); return false;">Buy</a>
+                </div>
+                <div class="work-item">
+                    <button type="button" id="button2" onclick="work(2)">Work 3</button>
+                    <a href="#" id="auto2" onclick="buyAuto(2); return false;">Auto</a>
+                    <a href="#" id="buy2" onclick="buyWork(2); return false;">Buy</a>
+                </div>
+                <div class="work-item">
+                    <button type="button" id="button3" onclick="work(3)">Work 4</button>
+                    <a href="#" id="auto3" onclick="buyAuto(3); return false;">Auto</a>
+                    <a href="#" id="buy3" onclick="buyWork(3); return false;">Buy</a>
+                </div>
+                <div class="work-item">
+                    <button type="button" id="button4" onclick="work(4)">Work 5</button>
+                    <a href="#" id="auto4" onclick="buyAuto(4); return false;">Auto</a>
+                    <a href="#" id="buy4" onclick="buyWork(4); return false;">Buy</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <p>Created by Jacek Ziemiański. &copy; 2025</p>
+    </footer>
 
     <script src="game2.js"></script>
 </body>
