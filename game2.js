@@ -14,6 +14,26 @@ const getWorkPrice = (work) => Math.ceil(work.basePrice * Math.pow(1.75, work.le
 
 const getAutoPrice = (work) => Math.ceil(work.baseAutoPrice * Math.pow(1.6, Math.max(work.level - 1, 0)));
 
+const formatNumber = (value) => {
+    const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi"];
+    let scaledValue = Math.abs(value);
+    let suffixIndex = 0;
+
+    while (scaledValue >= 1000 && suffixIndex < suffixes.length - 1) {
+        scaledValue /= 1000;
+        suffixIndex += 1;
+    }
+
+    const sign = value < 0 ? "-" : "";
+    const formattedValue = scaledValue >= 100 || suffixIndex === 0
+        ? Math.round(scaledValue).toString()
+        : scaledValue.toFixed(1).replace(/\.0$/, "");
+
+    return `${sign}${formattedValue}${suffixes[suffixIndex]}`;
+}
+
+const formatMoney = (value) => `$${formatNumber(value)}`;
+
 const refreshWorkValues = (work) => {
     work.amount = getWorkAmount(work);
     work.price = getWorkPrice(work);
@@ -124,24 +144,24 @@ const updateButtons = (work, index) => {
 
     if (work.bought) {
         setButtonState(workButton, "green-btn");
-        workButton.title = `Earn $${work.amount}`;
+        workButton.title = `Earn ${formatMoney(work.amount)}`;
     } else if (work.price <= gameStates.totalMoney){
         setButtonState(workButton, "yellow-btn");
-        workButton.title = `Buy ${work.name} for $${work.price}`;
+        workButton.title = `Buy ${work.name} for ${formatMoney(work.price)}`;
     } else {
         setButtonState(workButton, "red-btn");
-        workButton.title = `Need $${work.price} to unlock`;
+        workButton.title = `Need ${formatMoney(work.price)} to unlock`;
     }
 
     const infoElem = document.getElementById(`info${index}`);
     if (infoElem) {
-        infoElem.textContent = work.bought ? `Lv ${work.level} +$${work.amount}/click` : "Locked";
+        infoElem.textContent = work.bought ? `Lv ${work.level} +${formatMoney(work.amount)}/click` : "Locked";
     }
 
     const buyLink = document.getElementById(`buy${index}`);
     if (buyLink) {
         buyLink.hidden = false;
-        buyLink.textContent = work.bought ? `Upgrade: $${work.price}` : `Unlock: $${work.price}`;
+        buyLink.textContent = work.bought ? `Upgrade: ${formatMoney(work.price)}` : `Unlock: ${formatMoney(work.price)}`;
         buyLink.classList.toggle("is-available", work.price <= gameStates.totalMoney);
         buyLink.title = work.bought ? `Upgrade ${work.name} to level ${work.level + 1}` : `Unlock ${work.name}`;
     }
@@ -149,18 +169,18 @@ const updateButtons = (work, index) => {
     const autoLink = document.getElementById(`auto${index}`);
     if (autoLink) {
         autoLink.hidden = false;
-        autoLink.textContent = work.auto ? "Auto on" : `Auto: $${work.autoPrice}`;
+        autoLink.textContent = work.auto ? "Auto on" : `Auto: ${formatMoney(work.autoPrice)}`;
         autoLink.classList.toggle("is-available", work.bought && !work.auto && work.autoPrice <= gameStates.totalMoney);
         autoLink.classList.toggle("is-disabled", !work.bought || work.auto);
         autoLink.classList.toggle("is-owned", work.auto);
         autoLink.setAttribute("aria-disabled", String(!work.bought || work.auto));
-        autoLink.title = work.auto ? `${work.name} earns automatically` : `Automate for $${work.autoPrice}`;
+        autoLink.title = work.auto ? `${work.name} earns automatically` : `Automate for ${formatMoney(work.autoPrice)}`;
     }
 }
 
 const updateView = () => {
-    gameStates.totalMoneyElem.textContent = gameStates.totalMoney;
-    gameStates.incomeElem.textContent = getAutoIncome();
+    gameStates.totalMoneyElem.textContent = formatNumber(gameStates.totalMoney);
+    gameStates.incomeElem.textContent = formatNumber(getAutoIncome());
 
     gameStates.work.forEach((work, index) => {
         updateButtons(work, index);
@@ -173,7 +193,7 @@ const doWork = (work) => {
 
 const work = (index) => {
     doWork(gameStates.work[index]);
-    showGain(`+$${gameStates.work[index].amount} from ${gameStates.work[index].name}`, true);
+    showGain(`+${formatMoney(gameStates.work[index].amount)} from ${gameStates.work[index].name}`, true);
     saveGame();
     updateView();
 }
@@ -216,7 +236,7 @@ const clickerLoop = () => {
         }
     });
     if (earnedMoney > 0) {
-        showGain(`+$${earnedMoney} from automation`, true);
+        showGain(`+${formatMoney(earnedMoney)} from automation`, true);
         saveGame();
     }
     updateView();
