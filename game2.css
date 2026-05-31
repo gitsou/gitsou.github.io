@@ -85,6 +85,11 @@ button:enabled {
   cursor: pointer;
 }
 
+.work-item button.is-auto:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
 .red-btn {
   background-color: red;
   color: white;

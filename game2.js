@@ -139,17 +139,30 @@ const setButtonState = (button, stateClass) => {
     button.classList.add(stateClass);
 }
 
+const getWorkButtonText = (work) => {
+    if (!work.bought) {
+        return work.name;
+    }
+
+    const gainSuffix = work.auto ? "/s" : "";
+    return `${work.name} +${formatMoney(work.amount)}${gainSuffix}`;
+}
+
 const updateButtons = (work, index) => {
     const workButton = document.getElementById(`button${index}`);
     if (!workButton){
         return;
     }
 
-    updateState(workButton, "disabled", !work.bought);
+    workButton.textContent = getWorkButtonText(work);
+    updateState(workButton, "disabled", !work.bought || work.auto);
+    workButton.classList.toggle("is-auto", work.auto);
 
     if (work.bought) {
         setButtonState(workButton, "green-btn");
-        workButton.title = `Earn ${formatMoney(work.amount)}`;
+        workButton.title = work.auto
+            ? `${work.name} earns ${formatMoney(work.amount)} per second`
+            : `Earn ${formatMoney(work.amount)} per click`;
     } else if (work.price <= gameStates.totalMoney){
         setButtonState(workButton, "yellow-btn");
         workButton.title = `Buy ${work.name} for ${formatMoney(work.price)}`;
@@ -160,7 +173,7 @@ const updateButtons = (work, index) => {
 
     const infoElem = document.getElementById(`info${index}`);
     if (infoElem) {
-        infoElem.textContent = work.bought ? `Lv ${work.level} +${formatMoney(work.amount)}/click` : "Locked";
+        infoElem.textContent = work.bought ? `Lv ${work.level}` : "Locked";
     }
 
     const buyLink = document.getElementById(`buy${index}`);
@@ -198,8 +211,13 @@ const doWork = (work) => {
 }
 
 const work = (index) => {
-    doWork(gameStates.work[index]);
-    showGain(`+${formatMoney(gameStates.work[index].amount)} from ${gameStates.work[index].name}`, true);
+    const selectedWork = gameStates.work[index];
+    if (!selectedWork.bought || selectedWork.auto) {
+        return;
+    }
+
+    doWork(selectedWork);
+    showGain(`+${formatMoney(selectedWork.amount)} from ${selectedWork.name}`, true);
     saveGame();
     updateView();
 }
