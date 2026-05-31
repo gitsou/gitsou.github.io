@@ -4,8 +4,13 @@ const initialWork = [
     { name: "Work 1", basePrice: 2, baseAmount: 1, baseAutoPrice: 10, level: 1, auto: false, bought: true },
     { name: "Work 2", basePrice: 20, baseAmount: 8, baseAutoPrice: 120, level: 0, auto: false, bought: false },
     { name: "Work 3", basePrice: 180, baseAmount: 55, baseAutoPrice: 900, level: 0, auto: false, bought: false },
-    { name: "Work 4", basePrice: 1400, baseAmount: 300, baseAutoPrice: 6500, level: 0, auto: false, bought: false },
-    { name: "Work 5", basePrice: 9000, baseAmount: 1500, baseAutoPrice: 42000, level: 0, auto: false, bought: false },
+    { name: "Work 4", basePrice: 1200, baseAmount: 260, baseAutoPrice: 6500, level: 0, auto: false, bought: false },
+    { name: "Work 5", basePrice: 8500, baseAmount: 1300, baseAutoPrice: 42000, level: 0, auto: false, bought: false },
+    { name: "Work 6", basePrice: 52000, baseAmount: 6500, baseAutoPrice: 260000, level: 0, auto: false, bought: false },
+    { name: "Work 7", basePrice: 300000, baseAmount: 32000, baseAutoPrice: 1500000, level: 0, auto: false, bought: false },
+    { name: "Work 8", basePrice: 1700000, baseAmount: 170000, baseAutoPrice: 8500000, level: 0, auto: false, bought: false },
+    { name: "Work 9", basePrice: 9500000, baseAmount: 850000, baseAutoPrice: 48000000, level: 0, auto: false, bought: false },
+    { name: "Work 10", basePrice: 56000000, baseAmount: 4200000, baseAutoPrice: 290000000, level: 0, auto: false, bought: false },
 ];
 
 const getWorkAmount = (work) => work.baseAmount * Math.max(work.level, 1);
@@ -128,6 +133,45 @@ const showGain = (message, isActive = false) => {
     gameStates.lastGainElem.classList.toggle("is-active", isActive);
 }
 
+const createWorkElement = (work, index) => {
+    const workItem = document.createElement("div");
+    workItem.className = "work-item";
+
+    const workButton = document.createElement("button");
+    workButton.type = "button";
+    workButton.id = `button${index}`;
+    workButton.textContent = work.name;
+    workButton.addEventListener("click", () => workClick(index));
+
+    const infoElem = document.createElement("span");
+    infoElem.className = "work-info";
+    infoElem.id = `info${index}`;
+
+    const autoButton = document.createElement("button");
+    autoButton.type = "button";
+    autoButton.className = "action-button";
+    autoButton.id = `auto${index}`;
+    autoButton.addEventListener("click", () => buyAuto(index));
+
+    const buyButton = document.createElement("button");
+    buyButton.type = "button";
+    buyButton.className = "action-button";
+    buyButton.id = `buy${index}`;
+    buyButton.addEventListener("click", () => buyWork(index));
+
+    workItem.append(workButton, infoElem, autoButton, buyButton);
+    return workItem;
+}
+
+const renderWorkItems = () => {
+    const workButtons = document.getElementById("work-buttons");
+    if (!workButtons) {
+        return;
+    }
+
+    workButtons.replaceChildren(...gameStates.work.map(createWorkElement));
+}
+
 const updateState = (object, property, value) => {
     if (object[property] !== value) {
         object[property] = value;
@@ -210,7 +254,7 @@ const doWork = (work) => {
     gameStates.totalMoney += work.amount;
 }
 
-const work = (index) => {
+const workClick = (index) => {
     const selectedWork = gameStates.work[index];
     if (!selectedWork.bought || selectedWork.auto) {
         return;
@@ -272,6 +316,7 @@ const main = () => {
     gameStates.incomeElem = document.getElementsByClassName("income")[0];
     gameStates.lastGainElem = document.getElementsByClassName("last-gain")[0];
     loadGame();
+    renderWorkItems();
     updateView();
     clickerLoop();
 }
