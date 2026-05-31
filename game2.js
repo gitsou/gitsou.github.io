@@ -99,6 +99,11 @@ const loadGame = () => {
 }
 
 const resetGame = () => {
+    const shouldReset = window.confirm("Reset clicker game progress?");
+    if (!shouldReset) {
+        return;
+    }
+
     localStorage.removeItem(STORAGE_KEY);
     gameStates.totalMoney = 0;
     gameStates.work = createInitialWork();
