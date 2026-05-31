@@ -1,14 +1,30 @@
 const STORAGE_KEY = "clicker-game-state";
 
 const initialWork = [
-    { name: "Work 1", price: 2, amount: 1, autoPrice: 10, auto: false, bought: true },
-    { name: "Work 2", price: 20, amount: 10, autoPrice: 100, auto: false, bought: false },
-    { name: "Work 3", price: 200, amount: 100, autoPrice: 1000, auto: false, bought: false },
-    { name: "Work 4", price: 2000, amount: 1000, autoPrice: 10000, auto: false, bought: false },
-    { name: "Work 5", price: 20000, amount: 10000, autoPrice: 100000, auto: false, bought: false },
+    { name: "Work 1", basePrice: 2, baseAmount: 1, baseAutoPrice: 10, level: 1, auto: false, bought: true },
+    { name: "Work 2", basePrice: 20, baseAmount: 8, baseAutoPrice: 120, level: 0, auto: false, bought: false },
+    { name: "Work 3", basePrice: 180, baseAmount: 55, baseAutoPrice: 900, level: 0, auto: false, bought: false },
+    { name: "Work 4", basePrice: 1400, baseAmount: 300, baseAutoPrice: 6500, level: 0, auto: false, bought: false },
+    { name: "Work 5", basePrice: 9000, baseAmount: 1500, baseAutoPrice: 42000, level: 0, auto: false, bought: false },
 ];
 
-const createInitialWork = () => initialWork.map((work) => ({ ...work }));
+const getWorkAmount = (work) => work.baseAmount * Math.max(work.level, 1);
+
+const getWorkPrice = (work) => Math.ceil(work.basePrice * Math.pow(1.75, work.level));
+
+const getAutoPrice = (work) => Math.ceil(work.baseAutoPrice * Math.pow(1.6, Math.max(work.level - 1, 0)));
+
+const refreshWorkValues = (work) => {
+    work.amount = getWorkAmount(work);
+    work.price = getWorkPrice(work);
+    work.autoPrice = getAutoPrice(work);
+}
+
+const createInitialWork = () => initialWork.map((work) => {
+    const newWork = { ...work };
+    refreshWorkValues(newWork);
+    return newWork;
+});
 
 const gameStates = {
     totalMoneyElem: null,
@@ -23,7 +39,8 @@ const saveGame = () => {
         totalMoney: gameStates.totalMoney,
         work: gameStates.work.map((work) => ({
             bought: work.bought,
-            auto: work.auto
+            auto: work.auto,
+            level: work.level
         }))
     };
 
@@ -50,6 +67,10 @@ const loadGame = () => {
 
                 gameStates.work[index].bought = Boolean(savedWork.bought);
                 gameStates.work[index].auto = Boolean(savedWork.auto);
+                gameStates.work[index].level = Number.isInteger(savedWork.level)
+                    ? Math.max(savedWork.level, 0)
+                    : Number(gameStates.work[index].bought);
+                refreshWorkValues(gameStates.work[index]);
             });
         }
     } catch {
@@ -114,25 +135,26 @@ const updateButtons = (work, index) => {
 
     const infoElem = document.getElementById(`info${index}`);
     if (infoElem) {
-        infoElem.textContent = work.bought ? `+$${work.amount}/click` : "Locked";
+        infoElem.textContent = work.bought ? `Lv ${work.level} +$${work.amount}/click` : "Locked";
     }
 
     const buyLink = document.getElementById(`buy${index}`);
     if (buyLink) {
-        buyLink.hidden = work.bought;
-        buyLink.textContent = `Buy: $${work.price}`;
-        buyLink.classList.toggle("is-available", !work.bought && work.price <= gameStates.totalMoney);
-        buyLink.title = work.price <= gameStates.totalMoney ? `Unlock ${work.name}` : `Need $${work.price}`;
+        buyLink.hidden = false;
+        buyLink.textContent = work.bought ? `Upgrade: $${work.price}` : `Unlock: $${work.price}`;
+        buyLink.classList.toggle("is-available", work.price <= gameStates.totalMoney);
+        buyLink.title = work.bought ? `Upgrade ${work.name} to level ${work.level + 1}` : `Unlock ${work.name}`;
     }
 
     const autoLink = document.getElementById(`auto${index}`);
     if (autoLink) {
-        autoLink.hidden = work.auto;
-        autoLink.textContent = `Auto: $${work.autoPrice}`;
-        autoLink.classList.toggle("is-available", work.bought && work.autoPrice <= gameStates.totalMoney);
-        autoLink.classList.toggle("is-disabled", !work.bought);
-        autoLink.setAttribute("aria-disabled", String(!work.bought));
-        autoLink.title = work.bought ? `Automate for $${work.autoPrice}` : "Unlock this work first";
+        autoLink.hidden = false;
+        autoLink.textContent = work.auto ? "Auto on" : `Auto: $${work.autoPrice}`;
+        autoLink.classList.toggle("is-available", work.bought && !work.auto && work.autoPrice <= gameStates.totalMoney);
+        autoLink.classList.toggle("is-disabled", !work.bought || work.auto);
+        autoLink.classList.toggle("is-owned", work.auto);
+        autoLink.setAttribute("aria-disabled", String(!work.bought || work.auto));
+        autoLink.title = work.auto ? `${work.name} earns automatically` : `Automate for $${work.autoPrice}`;
     }
 }
 
@@ -157,10 +179,18 @@ const work = (index) => {
 }
 
 const buyWork = (index) => {
-    if (gameStates.totalMoney >= gameStates.work[index].price){
-        gameStates.work[index].bought = true;
-        gameStates.totalMoney -= gameStates.work[index].price;
-        showGain(`${gameStates.work[index].name} unlocked.`);
+    const work = gameStates.work[index];
+    if (gameStates.totalMoney >= work.price){
+        gameStates.totalMoney -= work.price;
+        if (work.bought) {
+            work.level += 1;
+            showGain(`${work.name} upgraded to level ${work.level}.`);
+        } else {
+            work.bought = true;
+            work.level = 1;
+            showGain(`${work.name} unlocked.`);
+        }
+        refreshWorkValues(work);
         saveGame();
         updateView();
     }

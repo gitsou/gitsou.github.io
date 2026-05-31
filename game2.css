@@ -127,6 +127,12 @@ button:enabled {
   cursor: not-allowed;
 }
 
+.work-item a.is-owned {
+  border-color: var(--accent);
+  background: #eef5f2;
+  color: var(--accent-dark);
+}
+
 @media (max-width: 520px) {
   .work-item {
     grid-template-columns: 1fr;
