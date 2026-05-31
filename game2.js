@@ -12,6 +12,8 @@ const createInitialWork = () => initialWork.map((work) => ({ ...work }));
 
 const gameStates = {
     totalMoneyElem: null,
+    incomeElem: null,
+    lastGainElem: null,
     totalMoney: 0,
     work: createInitialWork()
 };
@@ -59,7 +61,25 @@ const resetGame = () => {
     localStorage.removeItem(STORAGE_KEY);
     gameStates.totalMoney = 0;
     gameStates.work = createInitialWork();
+    showGain("Progress reset.");
     updateView();
+}
+
+const getAutoIncome = () => gameStates.work.reduce((total, work) => {
+    if (!work.auto) {
+        return total;
+    }
+
+    return total + work.amount;
+}, 0);
+
+const showGain = (message, isActive = false) => {
+    if (!gameStates.lastGainElem) {
+        return;
+    }
+
+    gameStates.lastGainElem.textContent = message;
+    gameStates.lastGainElem.classList.toggle("is-active", isActive);
 }
 
 const updateState = (object, property, value) => {
@@ -83,10 +103,18 @@ const updateButtons = (work, index) => {
 
     if (work.bought) {
         setButtonState(workButton, "green-btn");
+        workButton.title = `Earn $${work.amount}`;
     } else if (work.price <= gameStates.totalMoney){
         setButtonState(workButton, "yellow-btn");
+        workButton.title = `Buy ${work.name} for $${work.price}`;
     } else {
         setButtonState(workButton, "red-btn");
+        workButton.title = `Need $${work.price} to unlock`;
+    }
+
+    const infoElem = document.getElementById(`info${index}`);
+    if (infoElem) {
+        infoElem.textContent = work.bought ? `+$${work.amount}/click` : "Locked";
     }
 
     const buyLink = document.getElementById(`buy${index}`);
@@ -94,6 +122,7 @@ const updateButtons = (work, index) => {
         buyLink.hidden = work.bought;
         buyLink.textContent = `Buy: $${work.price}`;
         buyLink.classList.toggle("is-available", !work.bought && work.price <= gameStates.totalMoney);
+        buyLink.title = work.price <= gameStates.totalMoney ? `Unlock ${work.name}` : `Need $${work.price}`;
     }
 
     const autoLink = document.getElementById(`auto${index}`);
@@ -103,11 +132,13 @@ const updateButtons = (work, index) => {
         autoLink.classList.toggle("is-available", work.bought && work.autoPrice <= gameStates.totalMoney);
         autoLink.classList.toggle("is-disabled", !work.bought);
         autoLink.setAttribute("aria-disabled", String(!work.bought));
+        autoLink.title = work.bought ? `Automate for $${work.autoPrice}` : "Unlock this work first";
     }
 }
 
 const updateView = () => {
     gameStates.totalMoneyElem.textContent = gameStates.totalMoney;
+    gameStates.incomeElem.textContent = getAutoIncome();
 
     gameStates.work.forEach((work, index) => {
         updateButtons(work, index);
@@ -120,6 +151,7 @@ const doWork = (work) => {
 
 const work = (index) => {
     doWork(gameStates.work[index]);
+    showGain(`+$${gameStates.work[index].amount} from ${gameStates.work[index].name}`, true);
     saveGame();
     updateView();
 }
@@ -128,6 +160,7 @@ const buyWork = (index) => {
     if (gameStates.totalMoney >= gameStates.work[index].price){
         gameStates.work[index].bought = true;
         gameStates.totalMoney -= gameStates.work[index].price;
+        showGain(`${gameStates.work[index].name} unlocked.`);
         saveGame();
         updateView();
     }
@@ -138,20 +171,22 @@ const buyAuto = (index) => {
     if (work.bought && !work.auto && gameStates.totalMoney >= work.autoPrice){
         work.auto = true;
         gameStates.totalMoney -= work.autoPrice;
+        showGain(`${work.name} automated.`);
         saveGame();
         updateView();
     }
 }
 
 const clickerLoop = () => {
-    let earnedMoney = false;
+    let earnedMoney = 0;
     gameStates.work.forEach((w) => {
         if (w.auto){
             doWork(w);
-            earnedMoney = true;
+            earnedMoney += w.amount;
         }
     });
-    if (earnedMoney) {
+    if (earnedMoney > 0) {
+        showGain(`+$${earnedMoney} from automation`, true);
         saveGame();
     }
     updateView();
@@ -160,6 +195,8 @@ const clickerLoop = () => {
 
 const main = () => {
     gameStates.totalMoneyElem = document.getElementsByClassName("money")[0];
+    gameStates.incomeElem = document.getElementsByClassName("income")[0];
+    gameStates.lastGainElem = document.getElementsByClassName("last-gain")[0];
     loadGame();
     updateView();
     clickerLoop();

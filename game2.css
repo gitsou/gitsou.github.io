@@ -2,10 +2,37 @@
     display: inline-flex;
     gap: 4px;
     align-items: baseline;
-    margin-bottom: 12px;
+    margin: 0 10px 12px 0;
     padding: 8px 12px;
     background: var(--surface-muted);
     border-radius: 8px;
+    font-weight: 700;
+}
+
+.income-row {
+    display: inline-flex;
+    gap: 4px;
+    align-items: baseline;
+    margin: 0 0 12px;
+    padding: 8px 12px;
+    background: #eef5f2;
+    border-radius: 8px;
+    color: var(--accent-dark);
+    font-weight: 700;
+}
+
+.feedback-line {
+    min-height: 28px;
+    margin-bottom: 12px;
+    color: var(--muted);
+}
+
+.last-gain {
+    display: inline-block;
+}
+
+.last-gain.is-active {
+    color: var(--accent-dark);
     font-weight: 700;
 }
 
@@ -36,7 +63,7 @@
 
 .work-item {
     display: grid;
-    grid-template-columns: minmax(110px, 1fr) minmax(95px, auto) minmax(80px, auto);
+    grid-template-columns: minmax(110px, 1fr) minmax(110px, auto) minmax(95px, auto) minmax(80px, auto);
     align-items: center;
     gap: 12px;
 }
@@ -70,6 +97,12 @@ button:enabled {
 .green-btn {
   background-color: green;
   color: white;
+}
+
+.work-info {
+  color: var(--muted);
+  font-size: 0.92rem;
+  white-space: nowrap;
 }
 
 .work-item a {

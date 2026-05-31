@@ -34,32 +34,43 @@
             <p class="money-row">
                 Money: <strong class="money">0</strong>$
             </p>
+            <p class="income-row">
+                Auto income: <strong class="income">0</strong>$/s
+            </p>
+            <p class="feedback-line" aria-live="polite">
+                <span class="last-gain">Ready.</span>
+            </p>
             <div class="game-actions">
                 <button type="button" class="secondary-button" onclick="resetGame()">Reset game</button>
             </div>
             <div class="work-buttons">
                 <div class="work-item">
                     <button type="button" id="button0" onclick="work(0)">Work 1</button>
+                    <span class="work-info" id="info0"></span>
                     <a href="#" id="auto0" onclick="buyAuto(0); return false;">Auto</a>
                     <a href="#" id="buy0" onclick="buyWork(0); return false;">Buy</a>
                 </div>
                 <div class="work-item">
                     <button type="button" id="button1" onclick="work(1)">Work 2</button>
+                    <span class="work-info" id="info1"></span>
                     <a href="#" id="auto1" onclick="buyAuto(1); return false;">Auto</a>
                     <a href="#" id="buy1" onclick="buyWork(1); return false;">Buy</a>
                 </div>
                 <div class="work-item">
                     <button type="button" id="button2" onclick="work(2)">Work 3</button>
+                    <span class="work-info" id="info2"></span>
                     <a href="#" id="auto2" onclick="buyAuto(2); return false;">Auto</a>
                     <a href="#" id="buy2" onclick="buyWork(2); return false;">Buy</a>
                 </div>
                 <div class="work-item">
                     <button type="button" id="button3" onclick="work(3)">Work 4</button>
+                    <span class="work-info" id="info3"></span>
                     <a href="#" id="auto3" onclick="buyAuto(3); return false;">Auto</a>
                     <a href="#" id="buy3" onclick="buyWork(3); return false;">Buy</a>
                 </div>
                 <div class="work-item">
                     <button type="button" id="button4" onclick="work(4)">Work 5</button>
+                    <span class="work-info" id="info4"></span>
                     <a href="#" id="auto4" onclick="buyAuto(4); return false;">Auto</a>
                     <a href="#" id="buy4" onclick="buyWork(4); return false;">Buy</a>
                 </div>
