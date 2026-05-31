@@ -105,7 +105,7 @@ button:enabled {
   white-space: nowrap;
 }
 
-.work-item a {
+.action-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,22 +116,23 @@ button:enabled {
   border-radius: 8px;
   background: var(--surface);
   color: var(--muted);
+  font: inherit;
   text-align: center;
-  text-decoration: none;
 }
 
-.work-item a.is-available {
+.action-button.is-available {
   border-color: var(--accent);
   color: var(--accent-dark);
   font-weight: 700;
+  cursor: pointer;
 }
 
-.work-item a.is-disabled {
+.action-button.is-disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-.work-item a.is-owned {
+.action-button.is-owned {
   border-color: var(--accent);
   background: #eef5f2;
   color: var(--accent-dark);

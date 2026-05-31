@@ -162,6 +162,7 @@ const updateButtons = (work, index) => {
     if (buyLink) {
         buyLink.hidden = false;
         buyLink.textContent = work.bought ? `Upgrade: ${formatMoney(work.price)}` : `Unlock: ${formatMoney(work.price)}`;
+        updateState(buyLink, "disabled", work.price > gameStates.totalMoney);
         buyLink.classList.toggle("is-available", work.price <= gameStates.totalMoney);
         buyLink.title = work.bought ? `Upgrade ${work.name} to level ${work.level + 1}` : `Unlock ${work.name}`;
     }
@@ -170,10 +171,10 @@ const updateButtons = (work, index) => {
     if (autoLink) {
         autoLink.hidden = false;
         autoLink.textContent = work.auto ? "Auto on" : `Auto: ${formatMoney(work.autoPrice)}`;
+        updateState(autoLink, "disabled", !work.bought || work.auto || work.autoPrice > gameStates.totalMoney);
         autoLink.classList.toggle("is-available", work.bought && !work.auto && work.autoPrice <= gameStates.totalMoney);
         autoLink.classList.toggle("is-disabled", !work.bought || work.auto);
         autoLink.classList.toggle("is-owned", work.auto);
-        autoLink.setAttribute("aria-disabled", String(!work.bought || work.auto));
         autoLink.title = work.auto ? `${work.name} earns automatically` : `Automate for ${formatMoney(work.autoPrice)}`;
     }
 }
