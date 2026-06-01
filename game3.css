@@ -1,0 +1,146 @@
+.minesweeper-shell {
+    width: min(920px, calc(100% - 32px));
+}
+
+.minesweeper-panel {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 12px;
+    background: #bdbdbd;
+    border-color: #ffffff #7b7b7b #7b7b7b #ffffff;
+    border-style: solid;
+    border-width: 4px;
+    color: #111111;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.difficulty-bar,
+.mode-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.difficulty-bar button,
+.mode-bar button {
+    min-height: 34px;
+    padding: 6px 10px;
+    border-color: #ffffff #7b7b7b #7b7b7b #ffffff;
+    border-style: solid;
+    border-width: 3px;
+    background: #c0c0c0;
+    color: #111111;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.difficulty-bar button[aria-pressed="true"],
+.mode-bar button[aria-pressed="true"] {
+    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
+    background: #d6d6d6;
+}
+
+.score-panel {
+    display: grid;
+    grid-template-columns: 82px 54px 82px;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
+    border-style: solid;
+    border-width: 4px;
+    background: #c0c0c0;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 8px;
+    background: #050505;
+    color: #ff2020;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.reset-button {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 42px;
+    padding: 0;
+    border-color: #ffffff #7b7b7b #7b7b7b #ffffff;
+    border-style: solid;
+    border-width: 4px;
+    background: #c0c0c0;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.reset-button:active {
+    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
+}
+
+.status-line {
+    min-height: 24px;
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.board-scroll {
+    width: fit-content;
+    max-width: 100%;
+    overflow: auto;
+    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
+    border-style: solid;
+    border-width: 4px;
+    background: #9a9a9a;
+}
+
+#minesweeperBoard {
+    display: block;
+    background: #bdbdbd;
+    touch-action: manipulation;
+}
+
+.storage-note {
+    max-width: 560px;
+    margin: 12px 0 0;
+    color: #222222;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+    .minesweeper-panel {
+        padding: 10px;
+    }
+
+    .score-panel {
+        grid-template-columns: 72px 50px 72px;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .counter {
+        height: 38px;
+        font-size: 1.5rem;
+    }
+
+    .reset-button {
+        width: 46px;
+        height: 38px;
+    }
+}

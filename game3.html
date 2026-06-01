@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="game3.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="index.html">Jacek Ziemiański</a>
+            <a href="index.html">Home</a>
+            <a href="experiments.html" aria-current="page">Experiments</a>
+            <a href="links.html">Links</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="game-shell minesweeper-shell">
+        <section class="intro">
+            <p class="eyebrow">Experiment</p>
+            <h1>Minesweeper</h1>
+            <p class="lead">A classic canvas Minesweeper with saved progress.</p>
+        </section>
+
+        <section class="minesweeper-panel" aria-label="Minesweeper game">
+            <div class="difficulty-bar" aria-label="Difficulty">
+                <button type="button" data-difficulty="beginner">Beginner</button>
+                <button type="button" data-difficulty="intermediate">Intermediate</button>
+                <button type="button" data-difficulty="expert">Expert</button>
+            </div>
+
+            <div class="score-panel" aria-live="polite">
+                <div class="counter" aria-label="Mines remaining">
+                    <span id="mineCounter">010</span>
+                </div>
+                <button type="button" id="newGameButton" class="reset-button" aria-label="Start a new game">🙂</button>
+                <div class="counter" aria-label="Elapsed time">
+                    <span id="timeCounter">000</span>
+                </div>
+            </div>
+
+            <div class="mode-bar" aria-label="Action mode">
+                <button type="button" data-mode="reveal">Reveal</button>
+                <button type="button" data-mode="flag">Flag</button>
+            </div>
+
+            <p id="statusLine" class="status-line" aria-live="polite">Reveal a square to start.</p>
+
+            <div class="board-scroll">
+                <canvas id="minesweeperBoard" aria-label="Minesweeper board"></canvas>
+            </div>
+
+            <p class="storage-note">This game stores the current board in your browser's local storage so you can resume it. Nothing is sent anywhere.</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
+    </footer>
+
+    <script src="game3.js"></script>
+</body>
+</html>
