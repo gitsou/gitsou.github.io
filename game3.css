@@ -6,56 +6,73 @@
     width: fit-content;
     max-width: 100%;
     margin: 0 auto;
-    padding: 12px;
-    background: #bdbdbd;
-    border-color: #ffffff #7b7b7b #7b7b7b #ffffff;
-    border-style: solid;
-    border-width: 4px;
-    color: #111111;
-    font-family: Arial, Helvetica, sans-serif;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #d9ded7;
+    border-radius: 8px;
+    color: #1f2726;
+    box-shadow: 0 14px 36px rgba(31, 39, 38, 0.08);
 }
 
 .difficulty-bar,
 .mode-bar {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: 6px;
+    justify-content: center;
+}
+
+.difficulty-bar {
+    margin-bottom: 14px;
+}
+
+.mode-bar {
+    margin: 14px 0 10px;
 }
 
 .difficulty-bar button,
-.mode-bar button {
-    min-height: 34px;
-    padding: 6px 10px;
-    border-color: #ffffff #7b7b7b #7b7b7b #ffffff;
-    border-style: solid;
-    border-width: 3px;
-    background: #c0c0c0;
-    color: #111111;
+.mode-bar button,
+.reset-button {
+    min-height: 36px;
+    border: 1px solid #cdd5d0;
+    border-radius: 7px;
+    background: #f7f8f5;
+    color: #24302d;
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 700;
     cursor: pointer;
 }
 
+.difficulty-bar button,
+.mode-bar button {
+    padding: 7px 12px;
+}
+
+.difficulty-bar button:hover,
+.mode-bar button:hover,
+.reset-button:hover {
+    border-color: #8fa29a;
+    background: #eef2ee;
+}
+
 .difficulty-bar button[aria-pressed="true"],
 .mode-bar button[aria-pressed="true"] {
-    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
-    background: #d6d6d6;
+    border-color: #176b5b;
+    background: #e7f1ed;
+    color: #0f4d42;
 }
 
 .score-panel {
     display: grid;
-    grid-template-columns: 82px 54px 82px;
-    gap: 12px;
+    grid-template-columns: 88px 62px 88px;
+    gap: 10px;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
     padding: 10px;
-    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
-    border-style: solid;
-    border-width: 4px;
-    background: #c0c0c0;
+    background: #f4f6f3;
+    border: 1px solid #d9ded7;
+    border-radius: 8px;
 }
 
 .counter {
@@ -63,84 +80,87 @@
     align-items: center;
     justify-content: center;
     height: 42px;
-    padding: 0 8px;
-    background: #050505;
-    color: #ff2020;
+    padding: 0 10px;
+    background: #ffffff;
+    border: 1px solid #d9ded7;
+    border-radius: 7px;
+    color: #1f2726;
     font-family: "Courier New", Courier, monospace;
-    font-size: 1.85rem;
+    font-size: 1.55rem;
     font-weight: 700;
     line-height: 1;
 }
 
 .reset-button {
-    display: grid;
-    place-items: center;
-    width: 48px;
+    width: 62px;
     height: 42px;
-    padding: 0;
-    border-color: #ffffff #7b7b7b #7b7b7b #ffffff;
-    border-style: solid;
-    border-width: 4px;
-    background: #c0c0c0;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.reset-button:active {
-    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
+    padding: 0 10px;
 }
 
 .status-line {
     min-height: 24px;
     margin: 0 0 10px;
+    color: #4f5d58;
     font-size: 0.95rem;
     font-weight: 700;
+    text-align: center;
 }
 
 .board-scroll {
     width: fit-content;
     max-width: 100%;
+    margin: 0 auto;
     overflow: auto;
-    border-color: #7b7b7b #ffffff #ffffff #7b7b7b;
-    border-style: solid;
-    border-width: 4px;
-    background: #9a9a9a;
+    background: #edf1ea;
+    border: 1px solid #cbd3ce;
+    border-radius: 8px;
 }
 
 #minesweeperBoard {
     display: block;
-    background: #bdbdbd;
+    background: #edf1ea;
     touch-action: manipulation;
 }
 
 .storage-note {
     max-width: 560px;
     margin: 12px 0 0;
-    color: #222222;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #5f6965;
     font-size: 0.85rem;
-    line-height: 1.4;
+    line-height: 1.45;
 }
 
 @media (max-width: 560px) {
     .minesweeper-panel {
-        padding: 10px;
+        width: 100%;
+        padding: 14px;
+    }
+
+    .difficulty-bar,
+    .mode-bar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .difficulty-bar button,
+    .mode-bar button {
+        min-width: 0;
     }
 
     .score-panel {
-        grid-template-columns: 72px 50px 72px;
+        grid-template-columns: 74px 56px 74px;
         gap: 8px;
         padding: 8px;
     }
 
     .counter {
         height: 38px;
-        font-size: 1.5rem;
+        padding: 0 8px;
+        font-size: 1.35rem;
     }
 
     .reset-button {
-        width: 46px;
+        width: 56px;
         height: 38px;
     }
 }

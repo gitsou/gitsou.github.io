@@ -37,14 +37,14 @@ const game = {
 };
 
 const numberColors = {
-    1: "#0000ff",
-    2: "#007b00",
-    3: "#ff0000",
-    4: "#00007b",
-    5: "#7b0000",
-    6: "#007b7b",
-    7: "#000000",
-    8: "#7b7b7b",
+    1: "#2563eb",
+    2: "#15803d",
+    3: "#dc2626",
+    4: "#4338ca",
+    5: "#9f1239",
+    6: "#0f766e",
+    7: "#111827",
+    8: "#64748b",
 };
 
 const getIndex = (x, y) => y * game.state.columns + x;
@@ -363,7 +363,7 @@ const updateDisplay = () => {
     game.mineCounter.textContent = formatCounter(game.state.mines - getFlagsUsed());
     game.timeCounter.textContent = formatCounter(game.state.elapsedSeconds);
     game.statusLine.textContent = getStatusMessage();
-    game.newGameButton.textContent = game.state.status === "lost" ? "😵" : game.state.status === "won" ? "😎" : "🙂";
+    game.newGameButton.textContent = "New";
 
     game.difficultyButtons.forEach((button) => {
         button.setAttribute("aria-pressed", String(button.dataset.difficulty === game.state.difficulty));
@@ -420,20 +420,19 @@ const drawCell = (x, y) => {
 };
 
 const drawCoveredCell = (left, top) => {
-    game.ctx.fillStyle = "#c0c0c0";
+    game.ctx.fillStyle = "#f8faf8";
     game.ctx.fillRect(left, top, CELL_SIZE, CELL_SIZE);
-    game.ctx.fillStyle = "#ffffff";
-    game.ctx.fillRect(left, top, CELL_SIZE, 3);
-    game.ctx.fillRect(left, top, 3, CELL_SIZE);
-    game.ctx.fillStyle = "#7b7b7b";
-    game.ctx.fillRect(left, top + CELL_SIZE - 3, CELL_SIZE, 3);
-    game.ctx.fillRect(left + CELL_SIZE - 3, top, 3, CELL_SIZE);
+    game.ctx.strokeStyle = "#cbd3ce";
+    game.ctx.lineWidth = 1;
+    game.ctx.strokeRect(left + 0.5, top + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
+    game.ctx.fillStyle = "#e4ebe6";
+    game.ctx.fillRect(left + 4, top + 4, CELL_SIZE - 8, CELL_SIZE - 8);
 };
 
 const drawRevealedCell = (cell, left, top) => {
-    game.ctx.fillStyle = cell.exploded ? "#ff6a6a" : "#d0d0d0";
+    game.ctx.fillStyle = cell.exploded ? "#ffd6d6" : "#edf1ea";
     game.ctx.fillRect(left, top, CELL_SIZE, CELL_SIZE);
-    game.ctx.strokeStyle = "#9a9a9a";
+    game.ctx.strokeStyle = "#cbd3ce";
     game.ctx.lineWidth = 1;
     game.ctx.strokeRect(left + 0.5, top + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
 
@@ -452,10 +451,10 @@ const drawRevealedCell = (cell, left, top) => {
 };
 
 const drawFlag = (left, top) => {
-    game.ctx.fillStyle = "#111111";
-    game.ctx.fillRect(left + 10, top + 7, 2, 15);
-    game.ctx.fillRect(left + 7, top + 21, 12, 2);
-    game.ctx.fillStyle = "#ff0000";
+    game.ctx.fillStyle = "#33403b";
+    game.ctx.fillRect(left + 11, top + 7, 2, 15);
+    game.ctx.fillRect(left + 8, top + 21, 12, 2);
+    game.ctx.fillStyle = "#dc2626";
     game.ctx.beginPath();
     game.ctx.moveTo(left + 12, top + 7);
     game.ctx.lineTo(left + 22, top + 11);
@@ -468,7 +467,7 @@ const drawMine = (left, top) => {
     const centerX = left + CELL_SIZE / 2;
     const centerY = top + CELL_SIZE / 2;
 
-    game.ctx.strokeStyle = "#111111";
+    game.ctx.strokeStyle = "#202927";
     game.ctx.lineWidth = 2;
     for (let angle = 0; angle < Math.PI; angle += Math.PI / 4) {
         const dx = Math.cos(angle) * 9;
@@ -479,7 +478,7 @@ const drawMine = (left, top) => {
         game.ctx.stroke();
     }
 
-    game.ctx.fillStyle = "#111111";
+    game.ctx.fillStyle = "#202927";
     game.ctx.beginPath();
     game.ctx.arc(centerX, centerY, 7, 0, Math.PI * 2);
     game.ctx.fill();
