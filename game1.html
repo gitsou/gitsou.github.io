@@ -6,15 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas Grid</title>
 
-    <link rel="stylesheet" href="game1.css">
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="game1.css?v=20260601">
 </head>
 <body>
-    <div class="game1-toolbar">
-        <a href="experiments.html">Back to experiments</a>
-        <span>Canvas Grid</span>
-    </div>
-    <canvas id="game1"></canvas>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="index.html">Jacek Ziemiański</a>
+            <a href="index.html">Home</a>
+            <a href="experiments.html" aria-current="page">Experiments</a>
+            <a href="links.html">Links</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
 
-    <script src="game1.js"></script>
+    <main class="game-shell">
+        <section class="intro">
+            <p class="eyebrow">Experiment</p>
+            <h1>Canvas Grid</h1>
+            <p class="lead">A 16 by 16 interactive canvas board.</p>
+        </section>
+
+        <section class="game-panel canvas-panel" aria-label="Canvas Grid board">
+            <div class="canvas-board">
+                <canvas id="game1" aria-label="Interactive 16 by 16 canvas grid"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
+    </footer>
+
+    <script src="game1.js?v=20260601"></script>
 </body>
 </html>
