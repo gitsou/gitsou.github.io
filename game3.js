@@ -216,6 +216,11 @@ const stopTimer = () => {
     game.timerId = null;
 };
 
+const confirmRestartIfPlaying = () => (
+    game.state.status !== "playing"
+    || window.confirm("End the current game and start over?")
+);
+
 const setDifficulty = (difficultyName) => {
     stopTimer();
     game.state = createNewState(difficultyName);
@@ -420,12 +425,12 @@ const drawCell = (x, y) => {
 };
 
 const drawCoveredCell = (left, top) => {
-    game.ctx.fillStyle = "#f8faf8";
+    game.ctx.fillStyle = "#d8e0db";
     game.ctx.fillRect(left, top, CELL_SIZE, CELL_SIZE);
-    game.ctx.strokeStyle = "#cbd3ce";
+    game.ctx.strokeStyle = "#b8c4bd";
     game.ctx.lineWidth = 1;
     game.ctx.strokeRect(left + 0.5, top + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
-    game.ctx.fillStyle = "#e4ebe6";
+    game.ctx.fillStyle = "#c4d0c8";
     game.ctx.fillRect(left + 4, top + 4, CELL_SIZE - 8, CELL_SIZE - 8);
 };
 
@@ -527,14 +532,26 @@ const handleContextMenu = (event) => {
 
 const setupControls = () => {
     game.difficultyButtons.forEach((button) => {
-        button.addEventListener("click", () => setDifficulty(button.dataset.difficulty));
+        button.addEventListener("click", () => {
+            if (button.dataset.difficulty === game.state.difficulty) {
+                return;
+            }
+
+            if (confirmRestartIfPlaying()) {
+                setDifficulty(button.dataset.difficulty);
+            }
+        });
     });
 
     game.modeButtons.forEach((button) => {
         button.addEventListener("click", () => setMode(button.dataset.mode));
     });
 
-    game.newGameButton.addEventListener("click", () => setDifficulty(game.state.difficulty));
+    game.newGameButton.addEventListener("click", () => {
+        if (confirmRestartIfPlaying()) {
+            setDifficulty(game.state.difficulty);
+        }
+    });
     game.canvas.addEventListener("click", handleCanvasClick);
     game.canvas.addEventListener("contextmenu", handleContextMenu);
     window.addEventListener("resize", drawBoard);
