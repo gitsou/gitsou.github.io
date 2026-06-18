@@ -15,7 +15,7 @@
     align-items: baseline;
     margin: 0 0 12px;
     padding: 8px 12px;
-    background: #eef5f2;
+    background: var(--income-bg);
     border-radius: 8px;
     color: var(--accent-dark);
     font-weight: 700;
@@ -91,16 +91,19 @@ button:enabled {
 }
 
 .red-btn {
-  background-color: red;
-  color: white;
+  background-color: var(--btn-locked-bg);
+  color: var(--btn-locked-text);
+  border: 1px solid var(--btn-locked-border) !important;
 }
 .yellow-btn {
-  background-color: yellow;
-  color: black;
+  background-color: var(--btn-affordable-bg);
+  color: var(--btn-affordable-text);
+  border: 1px solid var(--btn-affordable-border) !important;
 }
 .green-btn {
-  background-color: green;
-  color: white;
+  background-color: var(--btn-owned-bg);
+  color: var(--btn-owned-text);
+  border: 1px solid var(--btn-owned-border) !important;
 }
 
 .work-info {
@@ -139,7 +142,7 @@ button:enabled {
 
 .action-button.is-owned {
   border-color: var(--accent);
-  background: #eef5f2;
+  background: var(--income-bg);
   color: var(--accent-dark);
 }
 
