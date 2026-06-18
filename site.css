@@ -1,5 +1,5 @@
 :root {
-    color-scheme: light;
+    color-scheme: light dark;
     --bg: #f6f7f2;
     --surface: #ffffff;
     --surface-muted: #edf1ea;
@@ -9,6 +9,46 @@
     --accent: #176b5b;
     --accent-dark: #0f4d42;
     --focus: #d18f00;
+
+    /* Clicker game colors (light mode defaults) */
+    --btn-locked-bg: #fbe9e7;
+    --btn-locked-text: #c53929;
+    --btn-locked-border: #ffccbc;
+    --btn-affordable-bg: #fff8e1;
+    --btn-affordable-text: #b26a00;
+    --btn-affordable-border: #ffe082;
+    --btn-owned-bg: #e8f5e9;
+    --btn-owned-text: #2e7d32;
+    --btn-owned-border: #a5d6a7;
+
+    --income-bg: #eef5f2;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #111615;
+        --surface: #19211f;
+        --surface-muted: #222c2a;
+        --text: #eef2f1;
+        --muted: #95a39f;
+        --border: #2d3b37;
+        --accent: #26a690;
+        --accent-dark: #38bfa8;
+        --focus: #f3a800;
+
+        /* Clicker game colors (dark mode) */
+        --btn-locked-bg: #2c1b18;
+        --btn-locked-text: #ff8a80;
+        --btn-locked-border: #5c2c25;
+        --btn-affordable-bg: #2d2615;
+        --btn-affordable-text: #ffd54f;
+        --btn-affordable-border: #5d4a1b;
+        --btn-owned-bg: #162d1c;
+        --btn-owned-text: #81c784;
+        --btn-owned-border: #275d33;
+
+        --income-bg: #152d27;
+    }
 }
 
 * {
@@ -33,6 +73,7 @@ a {
     color: var(--accent);
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.18em;
+    transition: color 0.2s ease-in-out;
 }
 
 a:hover {
@@ -43,6 +84,10 @@ a:focus-visible,
 button:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 3px;
+}
+
+button {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.1s ease-in-out;
 }
 
 .site-header {
@@ -142,6 +187,13 @@ h3 {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent);
 }
 
 .item-card p:last-child {

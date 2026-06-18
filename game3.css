@@ -7,11 +7,11 @@
     max-width: 100%;
     margin: 0 auto;
     padding: 18px;
-    background: #ffffff;
-    border: 1px solid #d9ded7;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    color: #1f2726;
-    box-shadow: 0 14px 36px rgba(31, 39, 38, 0.08);
+    color: var(--text);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
 }
 
 .difficulty-bar,
@@ -34,10 +34,10 @@
 .mode-bar button,
 .reset-button {
     min-height: 36px;
-    border: 1px solid #cdd5d0;
+    border: 1px solid var(--border);
     border-radius: 7px;
-    background: #f7f8f5;
-    color: #24302d;
+    background: var(--surface-muted);
+    color: var(--text);
     font: inherit;
     font-size: 0.92rem;
     font-weight: 700;
@@ -52,15 +52,15 @@
 .difficulty-bar button:hover,
 .mode-bar button:hover,
 .reset-button:hover {
-    border-color: #8fa29a;
-    background: #eef2ee;
+    border-color: var(--accent);
+    background: var(--surface);
 }
 
 .difficulty-bar button[aria-pressed="true"],
 .mode-bar button[aria-pressed="true"] {
-    border-color: #176b5b;
-    background: #e7f1ed;
-    color: #0f4d42;
+    border-color: var(--accent-dark);
+    background: var(--income-bg);
+    color: var(--accent-dark);
 }
 
 .score-panel {
@@ -70,8 +70,8 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
-    background: #f4f6f3;
-    border: 1px solid #d9ded7;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
     border-radius: 8px;
 }
 
@@ -81,10 +81,10 @@
     justify-content: center;
     height: 42px;
     padding: 0 10px;
-    background: #ffffff;
-    border: 1px solid #d9ded7;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 7px;
-    color: #1f2726;
+    color: var(--text);
     font-family: "Courier New", Courier, monospace;
     font-size: 1.55rem;
     font-weight: 700;
@@ -111,14 +111,14 @@
     max-width: 100%;
     margin: 0 auto;
     overflow: auto;
-    background: #edf1ea;
-    border: 1px solid #cbd3ce;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
     border-radius: 8px;
 }
 
 #minesweeperBoard {
     display: block;
-    background: #edf1ea;
+    background: var(--surface-muted);
     touch-action: manipulation;
 }
 

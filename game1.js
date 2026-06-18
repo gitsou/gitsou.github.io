@@ -94,6 +94,11 @@ const game = () => {
 
     board.canvas.addEventListener("click", onCanvasClick, false);
     window.addEventListener("resize", drawBoard);
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener("change", drawBoard);
+    }
 }
 
 game();

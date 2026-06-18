@@ -36,7 +36,9 @@ const game = {
     state: null,
 };
 
-const numberColors = {
+const isDarkMode = () => window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+const numberColorsLight = {
     1: "#2563eb",
     2: "#15803d",
     3: "#dc2626",
@@ -45,6 +47,21 @@ const numberColors = {
     6: "#0f766e",
     7: "#111827",
     8: "#64748b",
+};
+
+const numberColorsDark = {
+    1: "#60a5fa",
+    2: "#4ade80",
+    3: "#f87171",
+    4: "#818cf8",
+    5: "#fb7185",
+    6: "#2dd4bf",
+    7: "#f3f4f6",
+    8: "#9ca3af",
+};
+
+const getNumberColor = (num) => {
+    return isDarkMode() ? numberColorsDark[num] : numberColorsLight[num];
 };
 
 const getIndex = (x, y) => y * game.state.columns + x;
@@ -425,19 +442,23 @@ const drawCell = (x, y) => {
 };
 
 const drawCoveredCell = (left, top) => {
-    game.ctx.fillStyle = "#d8e0db";
+    const isDark = isDarkMode();
+    game.ctx.fillStyle = isDark ? "#222c2a" : "#d8e0db";
     game.ctx.fillRect(left, top, CELL_SIZE, CELL_SIZE);
-    game.ctx.strokeStyle = "#b8c4bd";
+    game.ctx.strokeStyle = isDark ? "#2d3b37" : "#b8c4bd";
     game.ctx.lineWidth = 1;
     game.ctx.strokeRect(left + 0.5, top + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
-    game.ctx.fillStyle = "#c4d0c8";
+    game.ctx.fillStyle = isDark ? "#2d3b37" : "#c4d0c8";
     game.ctx.fillRect(left + 4, top + 4, CELL_SIZE - 8, CELL_SIZE - 8);
 };
 
 const drawRevealedCell = (cell, left, top) => {
-    game.ctx.fillStyle = cell.exploded ? "#ffd6d6" : "#edf1ea";
+    const isDark = isDarkMode();
+    game.ctx.fillStyle = cell.exploded
+        ? (isDark ? "#5c2c25" : "#ffd6d6")
+        : (isDark ? "#19211f" : "#edf1ea");
     game.ctx.fillRect(left, top, CELL_SIZE, CELL_SIZE);
-    game.ctx.strokeStyle = "#cbd3ce";
+    game.ctx.strokeStyle = isDark ? "#2d3b37" : "#cbd3ce";
     game.ctx.lineWidth = 1;
     game.ctx.strokeRect(left + 0.5, top + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
 
@@ -447,7 +468,7 @@ const drawRevealedCell = (cell, left, top) => {
     }
 
     if (cell.adjacent > 0) {
-        game.ctx.fillStyle = numberColors[cell.adjacent] || "#111111";
+        game.ctx.fillStyle = getNumberColor(cell.adjacent) || (isDark ? "#f3f4f6" : "#111111");
         game.ctx.font = "700 18px Arial, Helvetica, sans-serif";
         game.ctx.textAlign = "center";
         game.ctx.textBaseline = "middle";
@@ -456,10 +477,11 @@ const drawRevealedCell = (cell, left, top) => {
 };
 
 const drawFlag = (left, top) => {
-    game.ctx.fillStyle = "#33403b";
+    const isDark = isDarkMode();
+    game.ctx.fillStyle = isDark ? "#8fa29a" : "#33403b";
     game.ctx.fillRect(left + 11, top + 7, 2, 15);
     game.ctx.fillRect(left + 8, top + 21, 12, 2);
-    game.ctx.fillStyle = "#dc2626";
+    game.ctx.fillStyle = isDark ? "#ff5252" : "#dc2626";
     game.ctx.beginPath();
     game.ctx.moveTo(left + 12, top + 7);
     game.ctx.lineTo(left + 22, top + 11);
@@ -471,8 +493,10 @@ const drawFlag = (left, top) => {
 const drawMine = (left, top) => {
     const centerX = left + CELL_SIZE / 2;
     const centerY = top + CELL_SIZE / 2;
+    const isDark = isDarkMode();
+    const mineColor = isDark ? "#ff8a80" : "#202927";
 
-    game.ctx.strokeStyle = "#202927";
+    game.ctx.strokeStyle = mineColor;
     game.ctx.lineWidth = 2;
     for (let angle = 0; angle < Math.PI; angle += Math.PI / 4) {
         const dx = Math.cos(angle) * 9;
@@ -483,12 +507,12 @@ const drawMine = (left, top) => {
         game.ctx.stroke();
     }
 
-    game.ctx.fillStyle = "#202927";
+    game.ctx.fillStyle = mineColor;
     game.ctx.beginPath();
     game.ctx.arc(centerX, centerY, 7, 0, Math.PI * 2);
     game.ctx.fill();
 
-    game.ctx.fillStyle = "#ffffff";
+    game.ctx.fillStyle = isDark ? "#2c1b18" : "#ffffff";
     game.ctx.beginPath();
     game.ctx.arc(centerX - 3, centerY - 3, 2, 0, Math.PI * 2);
     game.ctx.fill();
@@ -555,6 +579,13 @@ const setupControls = () => {
     game.canvas.addEventListener("click", handleCanvasClick);
     game.canvas.addEventListener("contextmenu", handleContextMenu);
     window.addEventListener("resize", drawBoard);
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener("change", () => {
+            drawBoard();
+        });
+    }
 };
 
 const init = () => {
