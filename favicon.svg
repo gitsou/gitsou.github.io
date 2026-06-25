@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="circle-clip">
+      <circle cx="8" cy="8" r="8"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circle-clip)">
+    <!-- Left half background (white) -->
+    <rect x="0" y="0" width="8" height="16" fill="#ffffff"/>
+    <!-- Right half background (dark charcoal) -->
+    <rect x="8" y="0" width="8" height="16" fill="#1f2726"/>
+    
+    <!-- J letter (left side, dark color) -->
+    <path d="M 3.5 3.5 H 6.5 V 8.5 C 6.5 10 5.5 11 4 11" 
+          fill="none" 
+          stroke="#1f2726" 
+          stroke-width="1.2" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+          
+    <!-- Z letter (right side, white color) -->
+    <path d="M 9.5 3.5 H 12.5 L 9.5 8.5 H 12.5" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="1.2" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+</svg>
