@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
+  <title>Caravan & Crossblades</title>
+  <script type="module" crossorigin src="assets/index-KvaJ9T8M.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-BsuwSKto.css">
+</head>
+<body>
+  <div id="app">
+    <header class="game-header">
+      <h1>Caravan & Crossblades</h1>
+      <div class="status-bar">
+        <div class="status-item">
+          <span class="label">Location:</span>
+          <span id="status-location" class="value">City A</span>
+        </div>
+        <div class="status-item">
+          <span class="label">Gold:</span>
+          <span id="status-gold" class="value">100g</span>
+        </div>
+        <div class="status-item">
+          <span class="label">Cargo:</span>
+          <span id="status-cargo" class="value">0 / 10</span>
+        </div>
+        <div class="status-item">
+          <span class="label">Time:</span>
+          <span id="status-time" class="value">Day 1 — ☀ Day</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="game-main">
+      <section class="market-section">
+        <h2>Local Market</h2>
+        <table class="market-table">
+          <thead>
+            <tr>
+              <th>Good</th>
+              <th>Price</th>
+              <th>Owned</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="market-body">
+            <!-- Dynamic rows will be inserted here -->
+          </tbody>
+        </table>
+      </section>
+
+      <section class="actions-section">
+        <button id="btn-travel" class="btn btn-primary">Travel to City B</button>
+      </section>
+    </main>
+
+    <footer class="game-footer">
+      <h2>Log</h2>
+      <div id="event-log" class="event-log">
+        <p class="log-entry system">Welcome to Caravan & Crossblades. Prepare your wagon.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
