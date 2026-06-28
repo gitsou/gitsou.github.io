@@ -7,9 +7,57 @@
   <title>Caravan & Crossblades</title>
   <script type="module" crossorigin src="assets/index-KvaJ9T8M.js"></script>
   <link rel="stylesheet" crossorigin href="assets/index-BsuwSKto.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <style>
+    :root {
+        --bg: #1a1410;
+        --surface: #2a2118;
+        --surface-muted: #1e1812;
+        --text: #e8dcc8;
+        --muted: #a0917a;
+        --border: #d2aa6e26;
+        --accent: #d4a643;
+        --accent-dark: #c49535;
+        --focus: #c47d3a;
+    }
+
+    body {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 100vh !important;
+        background-color: var(--bg) !important;
+        color: var(--text) !important;
+    }
+
+    body.night {
+        background-color: #110e0c !important;
+        --bg: #110e0c;
+        --surface: #1e1a16;
+        --surface-muted: #151210;
+        --text: #c8bfb0;
+        --muted: #7d7468;
+        --border: #b4915a1f;
+    }
+
+    #app {
+        margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
+  <header class="site-header">
+      <nav class="site-nav" aria-label="Main navigation">
+          <a class="brand" href="../index.html">Jacek Ziemiański</a>
+          <a href="../index.html">Home</a>
+          <a href="../experiments.html" aria-current="page">Experiments</a>
+          <a href="../links.html">Links</a>
+          <a href="../about.html">About</a>
+      </nav>
+  </header>
+
+  <main class="game-shell">
+    <div id="app">
     <header class="game-header">
       <h1>Caravan & Crossblades</h1>
       <div class="status-bar">
@@ -62,5 +110,10 @@
       </div>
     </footer>
   </div>
+  </main>
+
+  <footer class="site-footer">
+      <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
+  </footer>
 </body>
 </html>
