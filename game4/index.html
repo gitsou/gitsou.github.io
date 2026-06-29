@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
   <title>Caravan & Crossblades</title>
-  <script type="module" crossorigin src="assets/index-CEozENqC.js"></script>
-  <link rel="stylesheet" crossorigin href="assets/index-D2D99kX1.css">
+  <script type="module" crossorigin src="assets/index-CAANlLcT.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-BZvbwKk6.css">
   <link rel="stylesheet" href="../css/site.css">
   <style>
     :root {
@@ -89,12 +89,19 @@
       </section>
 
       <section class="market-section">
-        <h2>Local Market</h2>
+        <div class="section-heading market-heading">
+          <h2>Local Market</h2>
+          <div class="trade-quantity" aria-label="Trade quantity">
+            <button id="trade-qty-1" class="quantity-toggle active" type="button" data-trade-quantity="1" aria-pressed="true">x1</button>
+            <button id="trade-qty-5" class="quantity-toggle" type="button" data-trade-quantity="5" aria-pressed="false">x5</button>
+          </div>
+        </div>
         <table class="market-table">
           <thead>
             <tr>
               <th>Good</th>
               <th>Price</th>
+              <th>Stock</th>
               <th>Owned</th>
               <th>Actions</th>
             </tr>
@@ -103,6 +110,11 @@
             <!-- Dynamic rows will be inserted here -->
           </tbody>
         </table>
+      </section>
+
+      <section class="market-memory-section">
+        <h2>Market Notes</h2>
+        <div id="market-memory" class="market-memory"></div>
       </section>
 
       <section class="actions-section">
