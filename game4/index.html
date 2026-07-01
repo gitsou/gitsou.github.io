@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
   <title>Caravan & Crossblades</title>
-  <script type="module" crossorigin src="assets/index-BTAuGIOd.js"></script>
-  <link rel="stylesheet" crossorigin href="assets/index-Bta_fFR-.css">
+  <script type="module" crossorigin src="assets/index-JKgvE611.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-BfEvPeJk.css">
   <link rel="stylesheet" href="../css/site.css">
   <style>
     :root {
@@ -45,7 +45,7 @@
     }
   </style>
   <script data-goatcounter="https://cookietower.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
+          async src="https://cookietower.goatcounter.com/count.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -59,7 +59,7 @@
   </header>
 
   <main class="game-shell">
-    <div id="app" data-mobile-tab="travel">
+    <div id="app" data-active-section="travel">
     <header class="game-header">
       <h1>Caravan & Crossblades</h1>
       <div class="status-bar">
@@ -82,29 +82,36 @@
       </div>
     </header>
 
-    <nav class="mobile-tabs" aria-label="Game sections">
-      <button class="mobile-tab active" type="button" data-mobile-tab="travel" aria-pressed="true">Travel</button>
-      <button class="mobile-tab" type="button" data-mobile-tab="market" aria-pressed="false">Market</button>
-      <button class="mobile-tab" type="button" data-mobile-tab="jobs" aria-pressed="false">Jobs</button>
-      <button class="mobile-tab" type="button" data-mobile-tab="log" aria-pressed="false">Log</button>
+    <nav class="section-tabs" aria-label="Game sections">
+      <button class="section-tab active" type="button" data-section-tab="travel" aria-pressed="true">Travel</button>
+      <button class="section-tab" type="button" data-section-tab="market" aria-pressed="false">Market</button>
+      <button class="section-tab" type="button" data-section-tab="jobs" aria-pressed="false">Jobs</button>
+      <button class="section-tab" type="button" data-section-tab="services" aria-pressed="false">Services</button>
+      <button class="section-tab" type="button" data-section-tab="log" aria-pressed="false">Log</button>
     </nav>
 
     <div id="latest-event" class="latest-event system" role="status" aria-live="polite">
       Welcome to Caravan & Crossblades. Prepare your wagon.
     </div>
 
+    <section class="settlement-banner" aria-label="Current settlement">
+      <span id="settlement-type" class="settlement-type">City</span>
+      <p id="settlement-description">A caravan stop waits ahead.</p>
+    </section>
+
     <main class="game-main">
-      <section class="map-section" data-mobile-panel="travel">
+      <section class="map-section" data-section-panel="travel">
         <h2>Route Map</h2>
         <div id="route-map" class="route-map" aria-label="Route map"></div>
       </section>
 
-      <section class="market-section" data-mobile-panel="market">
+      <section class="market-section" data-section-panel="market">
         <div class="section-heading market-heading">
           <h2>Local Market</h2>
           <div class="trade-quantity" aria-label="Trade quantity">
             <button id="trade-qty-1" class="quantity-toggle active" type="button" data-trade-quantity="1" aria-pressed="true">x1</button>
             <button id="trade-qty-5" class="quantity-toggle" type="button" data-trade-quantity="5" aria-pressed="false">x5</button>
+            <button id="trade-qty-max" class="quantity-toggle" type="button" data-trade-quantity="max" aria-pressed="false">Max</button>
           </div>
         </div>
         <table class="market-table">
@@ -123,28 +130,33 @@
         </table>
       </section>
 
-      <section class="market-memory-section" data-mobile-panel="market">
+      <section class="market-memory-section" data-section-panel="market">
         <h2>Market Notes</h2>
         <div id="market-memory" class="market-memory"></div>
       </section>
 
-      <section class="actions-section" data-mobile-panel="travel">
-        <h2>Travel Routes</h2>
+      <section class="actions-section" data-section-panel="travel">
+        <h2>Journey Report</h2>
         <div id="travel-actions" class="travel-actions"></div>
       </section>
 
-      <section class="jobs-section" data-mobile-panel="jobs">
+      <section class="jobs-section" data-section-panel="jobs">
         <h2>Job Board</h2>
         <div id="job-board" class="job-board"></div>
       </section>
 
-      <section class="town-section" data-mobile-panel="jobs">
+      <section class="town-section" data-section-panel="jobs">
         <h2>Town Actions</h2>
         <div id="town-actions" class="town-actions"></div>
       </section>
+
+      <section class="services-section" data-section-panel="services">
+        <h2>Local Services</h2>
+        <div id="services-panel" class="services-panel"></div>
+      </section>
     </main>
 
-    <footer class="game-footer" data-mobile-panel="log">
+    <footer class="game-footer" data-section-panel="log">
       <h2>Log</h2>
       <div id="event-log" class="event-log">
         <p class="log-entry system">Welcome to Caravan & Crossblades. Prepare your wagon.</p>
