@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
   <title>Caravan & Crossblades</title>
-  <script type="module" crossorigin src="assets/index-4as5Z8fQ.js"></script>
-  <link rel="stylesheet" crossorigin href="assets/index-BfEvPeJk.css">
+  <script type="module" crossorigin src="assets/index-ByNPjRqh.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-DKIdLXym.css">
   <link rel="stylesheet" href="../css/site.css">
   <style>
     :root {
@@ -65,11 +65,11 @@
       <div class="status-bar">
         <div class="status-item">
           <span class="label">Location:</span>
-          <span id="status-location" class="value">City A</span>
+          <span id="status-location" class="value">Silver Leaf</span>
         </div>
         <div class="status-item">
           <span class="label">Gold:</span>
-          <span id="status-gold" class="value">100g</span>
+          <span id="status-gold" class="value">60g</span>
         </div>
         <div class="status-item">
           <span class="label">Cargo:</span>
@@ -80,6 +80,9 @@
           <span id="status-time" class="value">Day 1 — ☀ Day</span>
         </div>
       </div>
+      <section class="settlement-banner" aria-label="Current settlement">
+        <p id="settlement-description">A caravan stop waits ahead.</p>
+      </section>
     </header>
 
     <nav class="section-tabs" aria-label="Game sections">
@@ -93,11 +96,6 @@
     <div id="latest-event" class="latest-event system" role="status" aria-live="polite">
       Welcome to Caravan & Crossblades. Prepare your wagon.
     </div>
-
-    <section class="settlement-banner" aria-label="Current settlement">
-      <span id="settlement-type" class="settlement-type">City</span>
-      <p id="settlement-description">A caravan stop waits ahead.</p>
-    </section>
 
     <main class="game-main">
       <section class="map-section" data-section-panel="travel">
