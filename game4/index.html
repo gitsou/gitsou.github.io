@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
   <title>Caravan & Crossblades</title>
-  <script type="module" crossorigin src="assets/index-ByNPjRqh.js"></script>
-  <link rel="stylesheet" crossorigin href="assets/index-DKIdLXym.css">
+  <script type="module" crossorigin src="assets/index-BsfZNkjH.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-CnKdxmWJ.css">
   <link rel="stylesheet" href="../css/site.css">
   <style>
     :root {
@@ -63,13 +63,23 @@
     <header class="game-header">
       <h1>Caravan & Crossblades</h1>
       <div class="status-bar">
-        <div class="status-item">
+        <div class="status-item status-location-item">
           <span class="label">Location:</span>
-          <span id="status-location" class="value">Silver Leaf</span>
+          <span class="location-status-row">
+            <span id="status-location" class="value">Silver Leaf</span>
+            <button
+              id="settlement-description-toggle"
+              class="status-toggle"
+              type="button"
+              aria-controls="settlement-description"
+              aria-expanded="true"
+              title="Hide location description"
+            >Hide</button>
+          </span>
         </div>
         <div class="status-item">
           <span class="label">Gold:</span>
-          <span id="status-gold" class="value">60g</span>
+          <span id="status-gold" class="value">45g</span>
         </div>
         <div class="status-item">
           <span class="label">Cargo:</span>
@@ -80,7 +90,7 @@
           <span id="status-time" class="value">Day 1 — ☀ Day</span>
         </div>
       </div>
-      <section class="settlement-banner" aria-label="Current settlement">
+      <section id="settlement-banner" class="settlement-banner" aria-label="Current settlement">
         <p id="settlement-description">A caravan stop waits ahead.</p>
       </section>
     </header>
