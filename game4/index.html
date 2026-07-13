@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
   <title>Caravan & Crossblades</title>
-  <script type="module" crossorigin src="assets/index-C9vodtwH.js"></script>
-  <link rel="stylesheet" crossorigin href="assets/index-CnKdxmWJ.css">
+  <script type="module" crossorigin src="assets/index-DmgVbo5w.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-BswVzw0-.css">
   <link rel="stylesheet" href="../css/site.css">
   <style>
     :root {
@@ -143,11 +143,6 @@
         <div id="market-memory" class="market-memory"></div>
       </section>
 
-      <section class="actions-section" data-section-panel="travel">
-        <h2>Journey Report</h2>
-        <div id="travel-actions" class="travel-actions"></div>
-      </section>
-
       <section class="jobs-section" data-section-panel="jobs">
         <h2>Job Board</h2>
         <div id="job-board" class="job-board"></div>
@@ -163,6 +158,21 @@
         <div id="services-panel" class="services-panel"></div>
       </section>
     </main>
+
+    <section
+      id="narrative-screen"
+      class="narrative-screen"
+      aria-labelledby="narrative-title"
+      hidden
+    >
+      <div class="narrative-card">
+        <p id="narrative-kicker" class="narrative-kicker"></p>
+        <h2 id="narrative-title" tabindex="-1"></h2>
+        <p id="narrative-description" class="narrative-description"></p>
+        <div id="narrative-details" class="narrative-details"></div>
+        <div id="narrative-actions" class="narrative-actions"></div>
+      </div>
+    </section>
 
     <footer class="game-footer" data-section-panel="log">
       <h2>Log</h2>
