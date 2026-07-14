@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Caravan & Crossblades - A browser-based RPG combining trading, world exploration, and turn-based random encounters.">
   <title>Caravan & Crossblades</title>
-  <script type="module" crossorigin src="assets/index-DmgVbo5w.js"></script>
-  <link rel="stylesheet" crossorigin href="assets/index-BswVzw0-.css">
+  <script type="module" crossorigin src="assets/index-B4DNk1_A.js"></script>
+  <link rel="stylesheet" crossorigin href="assets/index-CRJTNfxN.css">
   <link rel="stylesheet" href="../css/site.css">
   <style>
     :root {
@@ -64,7 +64,7 @@
       <h1>Caravan & Crossblades</h1>
       <div class="status-bar">
         <div class="status-item status-location-item">
-          <span class="label">Location:</span>
+          <span id="status-location-label" class="label">Location:</span>
           <span class="location-status-row">
             <span id="status-location" class="value">Silver Leaf</span>
             <button
@@ -103,7 +103,7 @@
       <button class="section-tab" type="button" data-section-tab="log" aria-pressed="false">Log</button>
     </nav>
 
-    <div id="latest-event" class="latest-event system" role="status" aria-live="polite">
+    <div id="latest-event" class="visually-hidden" role="status" aria-live="polite">
       Welcome to Caravan & Crossblades. Prepare your wagon.
     </div>
 
