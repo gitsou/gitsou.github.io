@@ -26,8 +26,8 @@ const resizeCanvas = () => {
 }
 
 const drawCoveredField = (x, y, cellWidth, cellHeight) => {
-    const rgbX = 256 / board.columns;
-    const rgbY = 256 / board.rows;
+    const rgbX = 255 / board.columns;
+    const rgbY = 255 / board.rows;
     board.ctx.fillStyle = `rgb(${x * rgbX}, ${y * rgbY}, 0)`;
     board.ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 }
