@@ -318,7 +318,7 @@ const main = () => {
     loadGame();
     renderWorkItems();
     updateView();
-    clickerLoop();
+    setTimeout(clickerLoop, 1000);
 }
 
 main();
