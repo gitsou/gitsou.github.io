@@ -56,12 +56,15 @@ const gameStates = {
     incomeElem: null,
     lastGainElem: null,
     totalMoney: 0,
+    lastTickTime: Date.now(),
+    offlineMessage: null,
     work: createInitialWork()
 };
 
 const saveGame = () => {
     const saveState = {
         totalMoney: gameStates.totalMoney,
+        lastTimestamp: Date.now(),
         work: gameStates.work.map((work) => ({
             bought: work.bought,
             auto: work.auto,
@@ -98,6 +101,20 @@ const loadGame = () => {
                 refreshWorkValues(gameStates.work[index]);
             });
         }
+
+        const autoIncome = getAutoIncome();
+        if (Number.isFinite(parsedState.lastTimestamp) && autoIncome > 0) {
+            const offlineMs = Date.now() - parsedState.lastTimestamp;
+            if (offlineMs > 2000) {
+                const MAX_OFFLINE_SECONDS = 24 * 3600;
+                const offlineSeconds = Math.min(offlineMs / 1000, MAX_OFFLINE_SECONDS);
+                const offlineGain = autoIncome * offlineSeconds;
+                if (offlineGain > 0) {
+                    gameStates.totalMoney += offlineGain;
+                    gameStates.offlineMessage = `Welcome back! Earned +${formatMoney(offlineGain)} while away.`;
+                }
+            }
+        }
     } catch {
         localStorage.removeItem(STORAGE_KEY);
     }
@@ -111,6 +128,8 @@ const resetGame = () => {
 
     localStorage.removeItem(STORAGE_KEY);
     gameStates.totalMoney = 0;
+    gameStates.lastTickTime = Date.now();
+    gameStates.offlineMessage = null;
     gameStates.work = createInitialWork();
     showGain("Progress reset.");
     updateView();
@@ -296,15 +315,17 @@ const buyAuto = (index) => {
 }
 
 const clickerLoop = () => {
-    let earnedMoney = 0;
-    gameStates.work.forEach((w) => {
-        if (w.auto){
-            doWork(w);
-            earnedMoney += w.amount;
+    const now = Date.now();
+    const deltaSeconds = (now - gameStates.lastTickTime) / 1000;
+    gameStates.lastTickTime = now;
+
+    const autoIncome = getAutoIncome();
+    if (autoIncome > 0 && deltaSeconds > 0) {
+        const earnedMoney = autoIncome * deltaSeconds;
+        gameStates.totalMoney += earnedMoney;
+        if (!gameStates.offlineMessage) {
+            showGain(`+${formatMoney(autoIncome)}/s from automation`, true);
         }
-    });
-    if (earnedMoney > 0) {
-        showGain(`+${formatMoney(earnedMoney)} from automation`, true);
         saveGame();
     }
     updateView();
@@ -318,6 +339,10 @@ const main = () => {
     loadGame();
     renderWorkItems();
     updateView();
+    if (gameStates.offlineMessage) {
+        showGain(gameStates.offlineMessage, true);
+    }
+    gameStates.lastTickTime = Date.now();
     setTimeout(clickerLoop, 1000);
 }
 
