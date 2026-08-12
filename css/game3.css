@@ -122,14 +122,6 @@
     touch-action: manipulation;
 }
 
-.storage-note {
-    max-width: 560px;
-    margin: 12px 0 0;
-    color: #5f6965;
-    font-size: 0.85rem;
-    line-height: 1.45;
-}
-
 @media (max-width: 560px) {
     .minesweeper-panel {
         width: 100%;
