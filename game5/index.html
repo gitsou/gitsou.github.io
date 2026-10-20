@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101b25" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Territory" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+    <title>Territory Game — Full Takeover</title>
+    <script type="module" crossorigin src="./assets/index-CNy1PqEi.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CsA6MXOH.css">
+    <meta name="description" content="A continuous territory-capture game with selectable arenas, cosmetic characters, and up to three bots. Claim the whole arena to win." />
+    <link rel="canonical" href="https://gitsou.github.io/game5/index.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gitsou.github.io/game5/index.html" />
+    <meta property="og:title" content="Territory — Full Takeover" />
+    <meta property="og:description" content="A continuous territory-capture game with selectable arenas, cosmetic characters, and up to three bots. Claim the whole arena to win." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Territory — Full Takeover" />
+    <meta name="twitter:description" content="A continuous territory-capture game with selectable arenas, cosmetic characters, and up to three bots. Claim the whole arena to win." />
+    <script data-goatcounter="https://cookietower.goatcounter.com/count"
+            async src="https://gc.zgo.at/count.js"></script>
+  </head>
+  <body>
+    <main id="game" aria-label="Territory Game singleplayer prototype">
+      <canvas id="arena" aria-label="Game arena. Drag to steer on touch screens, or move your mouse.">
+        This prototype requires a browser with Canvas 2D support.
+      </canvas>
+      <header class="hud">
+        <div class="brand"><span class="brand-mark"></span><div>territory<span class="subtitle">FULL TAKEOVER</span></div></div>
+        <div class="actions">
+          <button id="frame-rate" type="button" aria-label="Enable 30 FPS rendering" aria-pressed="false">60 FPS</button>
+          <button id="pause" type="button" disabled>Pause</button>
+        </div>
+      </header>
+      <div class="overview">
+        <canvas id="minimap" aria-label="Minimap showing the arena, players, territories, and exposed trails" role="img"></canvas>
+        <aside id="respawn-notice" class="respawn-notice" role="status" hidden><strong id="respawn-title"></strong><span id="respawn-message"></span></aside>
+      </div>
+      <footer class="footer"><div class="scores"><output id="owned-score" aria-label="Your owned area">YOU 0.0%</output><output id="bot-one-score" aria-label="Orange bot owned area">B1 0.0%</output><output id="bot-two-score" aria-label="Blue bot owned area">B2 0.0%</output><output id="bot-three-score" aria-label="Purple bot owned area">B3 0.0%</output></div><div class="match-info"><span id="status">READY</span><output id="peak-score" aria-label="Your best territory this match">BEST 0.0%</output></div></footer>
+      <section id="overlay" class="overlay" aria-labelledby="overlay-title">
+        <div class="panel">
+          <p class="eyebrow"><a class="site-return" href="../experiments.html">← All experiments</a></p>
+          <h1 id="overlay-title">Make your<br /><em>own way.</em></h1>
+          <p id="overlay-description">Claim 100% of the arena to win. Cut rival trails or surround them. If you fall, return on a new island while the others keep playing.</p>
+          <div id="character-setup" class="setup-step">
+            <fieldset><legend>Choose your head</legend><div class="choice-grid heads">
+              <label class="choice"><input type="radio" name="head" value="circle"/><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="23"/><path class="direction-mark" d="M40 32 29 26 29 38Z"/></svg><span>Circle</span></label>
+              <label class="choice"><input type="radio" name="head" value="square"/><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="15" y="15" width="34" height="34" rx="6"/><path class="direction-mark" d="M40 32 29 26 29 38Z"/></svg><span>Square</span></label>
+              <label class="choice"><input type="radio" name="head" value="triangle"/><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M55 32 20 12 20 52Z"/><path class="direction-mark" d="M40 32 29 26 29 38Z"/></svg><span>Triangle</span></label>
+              <label class="choice"><input type="radio" name="head" value="hexagon"/><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M56 32 44 53 20 53 8 32 20 11 44 11Z"/><path class="direction-mark" d="M40 32 29 26 29 38Z"/></svg><span>Hexagon</span></label>
+            </div></fieldset>
+            <p class="setup-note">A new look, the same speed and circular collision area.</p>
+          </div>
+          <div id="arena-setup" class="setup-step" hidden>
+            <fieldset><legend>Choose your arena</legend><div class="choice-grid boards">
+              <label class="choice"><input type="radio" name="shape" value="rectangle"/><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="8" y="18" width="104" height="78"/></svg><span>Rectangle</span></label>
+              <label class="choice"><input type="radio" name="shape" value="circle"/><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="57" r="48"/></svg><span>Circle</span></label>
+              <label class="choice"><input type="radio" name="shape" value="triangle"/><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M49 13Q60 -3 71 13L113 89Q123 107 103 107H17Q-3 107 7 89Z"/></svg><span>Rounded triangle</span></label>
+            </div></fieldset>
+            <fieldset class="bot-options"><legend>Rivals</legend><div class="choice-grid bots">
+              <label class="choice"><input type="radio" name="bots" value="0"/><span>0 · Practice</span></label>
+              <label class="choice"><input type="radio" name="bots" value="1"/><span>1</span></label>
+              <label class="choice"><input type="radio" name="bots" value="2"/><span>2</span></label>
+              <label class="choice"><input type="radio" name="bots" value="3"/><span>3</span></label>
+            </div></fieldset>
+            <p class="setup-note">Claim every playable cell to win. With 0 bots, explore at your own pace.</p>
+          </div>
+          <div class="instructions"><p><strong>Touch</strong> Drag anywhere to steer.</p><p><strong>Mouse</strong> Move the pointer to aim.</p><p>Cross your own trail freely. Return home to capture.</p><p>Kills award connected enemy land. Detached pieces become neutral.</p><p>Touch the world edge to ride and gain speed. Steer inward to leave.</p></div>
+          <dl id="match-stats" class="match-stats" hidden><dt>BEST THIS MATCH</dt><dd><output id="best-score">0.0%</output></dd></dl>
+          <p id="result-hint" class="small-note" hidden>Choose Review to inspect the completed match.</p>
+          <button id="resume" class="primary" type="button">Start match <span aria-hidden="true">↗</span></button>
+          <button id="setup-back" class="restart" type="button" hidden>Back</button>
+          <button id="change-settings" class="restart" type="button" hidden>Choose character &amp; arena</button>
+          <button id="restart" class="restart" type="button" hidden>New match</button>
+          <p class="small-note">Self-crossing is safe · Escape to pause</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
