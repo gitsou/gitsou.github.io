@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
+  <defs>
+    <clipPath id="arena"><polygon points="47.391,20.000 112.609,20.000 140.000,47.391 140.000,112.609 112.609,140.000 47.391,140.000 20.000,112.609 20.000,47.391"/></clipPath>
+    <pattern id="grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" stroke="#80aea0" stroke-opacity=".18" stroke-width=".7"/></pattern>
+    <linearGradient id="land" x1="25" y1="30" x2="135" y2="135" gradientUnits="userSpaceOnUse"><stop stop-color="#294b4a"/><stop offset="1" stop-color="#172b38"/></linearGradient>
+  </defs>
+  <g clip-path="url(#arena)">
+    <path d="M0 0h160v160H0Z" fill="url(#land)"/>
+    <path d="M36 72h24v24H48v12H24V84h12Z" fill="#b5ce96" fill-opacity=".4"/>
+    <path d="M96 48h24v12h12v24h-24V72H96Z" fill="#8dbdf5" fill-opacity=".4"/>
+    <path d="M84 108h24v12H96v12H72v-12h12Z" fill="#f4a17f" fill-opacity=".4"/>
+    <path d="M0 0h160v160H0Z" fill="url(#grid)"/>
+    <path d="M48 88h24V64h24" stroke="#b5ce96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="48" cy="88" r="3" fill="#b5ce96"/>
+    <circle cx="112" cy="64" r="3" fill="#8dbdf5"/>
+    <circle cx="88" cy="120" r="3" fill="#f4a17f"/>
+  </g>
+  <polygon points="47.391,20.000 112.609,20.000 140.000,47.391 140.000,112.609 112.609,140.000 47.391,140.000 20.000,112.609 20.000,47.391" stroke="#b5edb1" stroke-width="2" stroke-linejoin="round"/>
+</svg>
