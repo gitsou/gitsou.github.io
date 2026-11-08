@@ -12,8 +12,8 @@
     <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
     <title>Territory Game — Full Takeover</title>
-    <script type="module" crossorigin src="./assets/index-B5Tsen7M.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DpnqrbLj.css">
+    <script type="module" crossorigin src="./assets/index-C6hsqLmG.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BJQpYYUN.css">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
             async src="https://gc.zgo.at/count.js"></script>
     <meta name="description" content="A continuous territory-capture game with selectable arenas, distinct character handling, and up to five bots. Claim the whole arena to win." />
@@ -62,14 +62,7 @@
             </div></fieldset>
           </div>
           <div id="arena-setup" class="setup-step" hidden>
-            <fieldset><legend class="visually-hidden">Choose your arena</legend><div class="choice-grid boards">
-              <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="rectangle"/><img class="arena-preview" src="./arenas/rectangle.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Rectangle</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="circle"/><img class="arena-preview" src="./arenas/circle.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Circle</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="triangle"/><img class="arena-preview" src="./arenas/triangle.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Triangle</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="ellipse"/><img class="arena-preview" src="./arenas/ellipse.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Ellipse</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="hexagon"/><img class="arena-preview" src="./arenas/hexagon.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Hexagon</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="octagon"/><img class="arena-preview" src="./arenas/octagon.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Octagon ×4</span><span class="arena-mark" aria-hidden="true"></span></label>
-            </div></fieldset>
+            <fieldset><legend class="visually-hidden">Choose your arena</legend><div class="choice-grid boards"></div></fieldset>
           </div>
           <div id="bots-setup" class="setup-step" hidden>
             <fieldset class="bot-options"><legend class="visually-hidden">Rivals</legend><div class="choice-grid bots">
@@ -92,12 +85,14 @@
             <div><dt>TIME</dt><dd><output id="elapsed-score">0:00.0</output></dd></div>
           </dl>
           <p id="record-notice" class="record-notice" hidden></p>
-          <button id="resume" class="primary" type="button">1 Player ↗</button>
-          <div class="menu-actions">
-            <button id="setup-back" class="restart" type="button" hidden>Back</button>
-            <button id="restart" class="restart" type="button" hidden>New match</button>
-            <button id="view-arena" class="restart" type="button" hidden>View arena</button>
-            <button id="main-menu" class="restart" type="button" hidden>Main menu</button>
+          <div class="overlay-actions">
+            <button id="resume" class="primary" type="button">1 Player ↗</button>
+            <div class="menu-actions">
+              <button id="setup-back" class="restart" type="button" hidden>Back</button>
+              <button id="restart" class="restart" type="button" hidden>New match</button>
+              <button id="view-arena" class="restart" type="button" hidden>View arena</button>
+              <button id="main-menu" class="restart" type="button" hidden>Main menu</button>
+            </div>
           </div>
           <details id="reports" class="reports" hidden>
             <summary>Reports</summary>
