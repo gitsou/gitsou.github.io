@@ -12,8 +12,8 @@
     <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
     <title>Territory Game — Full Takeover</title>
-    <script type="module" crossorigin src="./assets/index-BHdMmUVr.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Cvp1vHZa.css">
+    <script type="module" crossorigin src="./assets/index-C34qujB4.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BWqIweOU.css">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
             async src="https://gc.zgo.at/count.js"></script>
     <meta name="description" content="A continuous territory-capture game with selectable arenas, distinct character handling, and up to five bots. Claim the whole arena to win." />
@@ -33,7 +33,7 @@
         This prototype requires a browser with Canvas 2D support.
       </canvas>
       <header class="hud">
-        <div class="brand"><span class="brand-mark"></span><div>territory<span class="subtitle">FULL TAKEOVER</span></div></div>
+        <div class="brand"><span class="brand-mark"></span><div>territory</div></div>
         <div class="actions">
           <button id="frame-rate" type="button" aria-label="Enable 30 FPS rendering" aria-pressed="false">60 FPS</button>
           <button id="pause" type="button" disabled>Pause</button>
@@ -42,16 +42,17 @@
       <div class="overview">
         <canvas id="minimap" aria-label="Minimap showing the arena, players, territories, and exposed trails" role="img"></canvas>
         <aside id="respawn-notice" class="respawn-notice" role="status" hidden><strong id="respawn-title"></strong><span id="respawn-message"></span></aside>
+        <ol id="ranking" class="ranking" aria-label="Territory leaders"></ol>
       </div>
-      <footer class="footer"><div class="scores"><output id="owned-score" aria-label="Your owned area">YOU 0.0%</output><output id="bot-one-score" aria-label="Bot 1 owned area">B1 0.0%</output><output id="bot-two-score" aria-label="Bot 2 owned area">B2 0.0%</output><output id="bot-three-score" aria-label="Bot 3 owned area">B3 0.0%</output><output id="bot-four-score" aria-label="Bot 4 owned area" hidden>B4 0.0%</output><output id="bot-five-score" aria-label="Bot 5 owned area" hidden>B5 0.0%</output></div><div class="match-info"><span id="status">READY</span><output id="peak-score" aria-label="Your best territory this match">BEST 0.0%</output></div></footer>
+      <footer class="footer"><div class="match-info"><span id="status">READY</span><output id="peak-score" aria-label="Your best territory this match">BEST 0.0%</output></div></footer>
       <section id="overlay" class="overlay" aria-labelledby="overlay-title">
         <div class="panel">
           <p class="eyebrow"><a class="site-return" href="../experiments.html">← All experiments</a></p>
           <h1 id="overlay-title">territory</h1>
-          <figure id="title-art"><figcaption>FULL TAKEOVER</figcaption><img src="./title-arena.svg" width="480" height="220" alt="" draggable="false"/></figure>
-          <p id="overlay-description">Claim 100% of the arena to win. Cut rival trails or surround them. If you fall, return on a new island while the others keep playing.</p>
+          <figure id="title-art"><img src="./title-arena.svg" width="480" height="220" alt="" draggable="false"/></figure>
+          <p id="overlay-description" hidden></p>
           <div id="character-setup" class="setup-step" hidden>
-            <fieldset><legend>Choose your player</legend><div class="choice-grid players">
+            <fieldset><legend class="visually-hidden">Choose your player</legend><div class="choice-grid players">
               <label class="choice portrait-choice player-choice"><input type="radio" name="player" value="circle"/><img class="player-portrait" src="./players/fox.svg" alt="" width="160" height="160" draggable="false"/><span class="player-name">Fox</span><span class="player-color" aria-hidden="true"></span></label>
               <label class="choice portrait-choice player-choice"><input type="radio" name="player" value="square"/><img class="player-portrait" src="./players/bear.svg" alt="" width="160" height="160" draggable="false"/><span class="player-name">Bear</span><span class="player-color" aria-hidden="true"></span></label>
               <label class="choice portrait-choice player-choice"><input type="radio" name="player" value="triangle"/><img class="player-portrait" src="./players/owl.svg" alt="" width="160" height="160" draggable="false"/><span class="player-name">Owl</span><span class="player-color" aria-hidden="true"></span></label>
@@ -61,7 +62,7 @@
             </div></fieldset>
           </div>
           <div id="arena-setup" class="setup-step" hidden>
-            <fieldset><legend>Choose your arena</legend><div class="choice-grid boards">
+            <fieldset><legend class="visually-hidden">Choose your arena</legend><div class="choice-grid boards">
               <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="rectangle"/><img class="arena-preview" src="./arenas/rectangle.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Rectangle</span><span class="arena-mark" aria-hidden="true"></span></label>
               <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="circle"/><img class="arena-preview" src="./arenas/circle.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Circle</span><span class="arena-mark" aria-hidden="true"></span></label>
               <label class="choice portrait-choice arena-choice"><input type="radio" name="shape" value="triangle"/><img class="arena-preview" src="./arenas/triangle.svg" alt="" width="160" height="160" draggable="false"/><span class="arena-name">Triangle</span><span class="arena-mark" aria-hidden="true"></span></label>
@@ -71,36 +72,39 @@
             </div></fieldset>
           </div>
           <div id="bots-setup" class="setup-step" hidden>
-            <fieldset class="bot-options"><legend>Rivals</legend><div class="choice-grid bots">
+            <fieldset class="bot-options"><legend class="visually-hidden">Rivals</legend><div class="choice-grid bots">
               <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="0"/><span class="bot-number" aria-hidden="true">0</span><span class="bot-name">Practice</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="1"/><span class="bot-number" aria-hidden="true">1</span><span class="bot-name">1 bot</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="2"/><span class="bot-number" aria-hidden="true">2</span><span class="bot-name">2 bots</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="3"/><span class="bot-number" aria-hidden="true">3</span><span class="bot-name">3 bots</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="4"/><span class="bot-number" aria-hidden="true">4</span><span class="bot-name">4 bots</span><span class="arena-mark" aria-hidden="true"></span></label>
-              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="5"/><span class="bot-number" aria-hidden="true">5</span><span class="bot-name">5 bots</span><span class="arena-mark" aria-hidden="true"></span></label>
+              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="1"/><span class="bot-number" aria-hidden="true">1</span><span class="bot-name">bot</span><span class="arena-mark" aria-hidden="true"></span></label>
+              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="2"/><span class="bot-number" aria-hidden="true">2</span><span class="bot-name">bots</span><span class="arena-mark" aria-hidden="true"></span></label>
+              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="3"/><span class="bot-number" aria-hidden="true">3</span><span class="bot-name">bots</span><span class="arena-mark" aria-hidden="true"></span></label>
+              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="4"/><span class="bot-number" aria-hidden="true">4</span><span class="bot-name">bots</span><span class="arena-mark" aria-hidden="true"></span></label>
+              <label class="choice portrait-choice bot-choice"><input type="radio" name="bots" value="5"/><span class="bot-number" aria-hidden="true">5</span><span class="bot-name">bots</span><span class="arena-mark" aria-hidden="true"></span></label>
             </div></fieldset>
-            <fieldset id="difficulty-options" class="difficulty-options"><legend>Bot difficulty</legend><div class="choice-grid difficulties">
-              <label class="choice"><input type="radio" name="difficulty" value="easy"/><span class="player-name">Easy</span><span>Smaller trips · fewer attacks</span></label>
-              <label class="choice"><input type="radio" name="difficulty" value="standard"/><span class="player-name">Standard</span><span>Bolder trips · more attacks</span></label>
+            <fieldset id="difficulty-options" class="difficulty-options"><legend>Difficulty</legend><div class="choice-grid difficulties">
+              <label class="choice"><input type="radio" name="difficulty" value="easy"/><span class="player-name">Easy</span></label>
+              <label class="choice"><input type="radio" name="difficulty" value="standard"/><span class="player-name">Standard</span></label>
             </div></fieldset>
             <p id="arena-records" class="setup-note"></p>
           </div>
-          <div class="instructions"><p><strong>Touch</strong> Drag anywhere to steer.</p><p><strong>Mouse</strong> Move the pointer to aim.</p><p>Cross your own trail freely. Return home to capture.</p><p>Kills award connected enemy land. Detached pieces become neutral.</p><p>Touch the world edge to ride and gain speed. Steer inward to leave.</p></div>
           <dl id="match-stats" class="match-stats" hidden>
-            <div><dt>BEST TERRITORY</dt><dd><output id="best-score">0.0%</output></dd></div>
+            <div><dt>TERRITORY</dt><dd><output id="best-score">0.0%</output></dd></div>
             <div><dt>KILLS</dt><dd><output id="kills-score">0</output></dd></div>
             <div><dt>TIME</dt><dd><output id="elapsed-score">0:00.0</output></dd></div>
           </dl>
           <p id="record-notice" class="record-notice" hidden></p>
-          <p id="result-hint" class="small-note" hidden></p>
           <button id="resume" class="primary" type="button">1 Player ↗</button>
-          <button id="setup-back" class="restart" type="button" hidden>Back</button>
-          <button id="change-settings" class="restart" type="button" hidden>Choose player &amp; arena</button>
-          <button id="main-menu" class="restart" type="button" hidden>Main menu</button>
-          <button id="view-arena" class="text-button" type="button" hidden>View arena</button>
-          <button id="save-diagnostic" class="restart" type="button" hidden>Save diagnostic report</button>
-          <p id="diagnostic-notice" class="small-note" role="status" hidden></p>
-          <button id="restart" class="restart" type="button" hidden>New match</button>
+          <div class="menu-actions">
+            <button id="setup-back" class="restart" type="button" hidden>Back</button>
+            <button id="restart" class="restart" type="button" hidden>New match</button>
+            <button id="view-arena" class="restart" type="button" hidden>View arena</button>
+            <button id="main-menu" class="restart" type="button" hidden>Main menu</button>
+          </div>
+          <details id="reports" class="reports" hidden>
+            <summary>Reports</summary>
+            <button id="save-match-log" class="restart" type="button">Match log</button>
+            <button id="save-diagnostic" class="restart" type="button">Diagnostic report</button>
+            <p id="diagnostic-notice" class="report-notice" role="status" hidden></p>
+          </details>
         </div>
       </section>
     </main>
