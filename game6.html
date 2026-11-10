@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku – Puzzles for Phone and Desktop</title>
+    <meta name="description" content="A Sudoku game with Easy, Medium, and Hard puzzles, a daily puzzle, notes, hints, and shareable puzzle links.">
+    <link rel="canonical" href="https://gitsou.github.io/game6.html">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gitsou.github.io/game6.html">
+    <meta property="og:title" content="Sudoku – Puzzles for Phone and Desktop">
+    <meta property="og:description" content="A Sudoku game with Easy, Medium, and Hard puzzles, a daily puzzle, notes, hints, and shareable puzzle links.">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Sudoku – Puzzles for Phone and Desktop">
+    <meta name="twitter:description" content="A Sudoku game with Easy, Medium, and Hard puzzles, a daily puzzle, notes, hints, and shareable puzzle links.">
+
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/game6.css?v=20261110">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <script data-goatcounter="https://cookietower.goatcounter.com/count"
+            async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="index.html">Jacek Ziemiański</a>
+            <a href="index.html">Home</a>
+            <a href="experiments.html" aria-current="page">Experiments</a>
+            <a href="notes.html">Notes</a>
+            <a href="links.html">Links</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="game-shell sudoku-shell">
+        <section class="intro">
+            <p class="eyebrow">Experiment</p>
+            <h1>Sudoku</h1>
+            <p class="lead">Fill every row, column, and box with the numbers 1 to 9.</p>
+        </section>
+
+        <section class="sudoku-panel" aria-label="Sudoku game">
+            <div class="level-bar" aria-label="Puzzle type">
+                <button type="button" data-level="easy">Easy</button>
+                <button type="button" data-level="medium">Medium</button>
+                <button type="button" data-level="hard">Hard</button>
+                <button type="button" id="dailyButton">Daily</button>
+            </div>
+
+            <div class="sudoku-info">
+                <span id="puzzleLabel" class="puzzle-label">Sudoku</span>
+                <span id="hintCounter" class="hint-counter">Hints: 0</span>
+                <span id="timeCounter" class="time-counter" aria-label="Elapsed time">00:00</span>
+            </div>
+
+            <div class="sudoku-play">
+                <div id="sudokuBoard" class="sudoku-board" role="group" aria-label="Sudoku board. Use the arrow keys to move, numbers 1 to 9 to fill a cell, Backspace to erase, and N to switch notes."></div>
+
+                <div class="sudoku-controls">
+                    <div class="tool-bar">
+                        <button type="button" id="undoButton">Undo</button>
+                        <button type="button" id="eraseButton">Erase</button>
+                        <button type="button" id="notesButton" aria-pressed="false">Notes</button>
+                        <button type="button" id="hintButton">Hint</button>
+                    </div>
+                    <div id="numberPad" class="number-pad" aria-label="Numbers"></div>
+                    <p id="statusLine" class="status-line" aria-live="polite"></p>
+                    <div id="winPanel" class="win-panel" hidden>
+                        <p class="win-title">Puzzle solved!</p>
+                        <p id="winSummary"></p>
+                    </div>
+                    <div class="game-actions">
+                        <button type="button" id="newGameButton">New game</button>
+                        <button type="button" id="copyLinkButton">Copy link</button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="board-help">Tap a cell, then a number. Notes mode writes small pencil marks instead. Keyboard: arrow keys move, 1–9 fill, Backspace erases, N switches notes, Ctrl+Z undoes. Copy link shares the exact puzzle; the daily puzzle is the same for everyone.</p>
+
+            <p class="storage-note">This game stores the current puzzle in your browser's local storage so you can resume it. Game data never leaves your device. The site uses cookie-free, anonymous visit counting (<a href="about.html#privacy">details</a>).</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
+    </footer>
+
+    <script src="js/game6.js?v=20261110"></script>
+</body>
+</html>
