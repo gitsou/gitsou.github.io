@@ -1,7 +1,7 @@
 {
   "name": "Territory Game",
   "short_name": "Territory",
-  "description": "A continuous territory takeover game against three bots.",
+  "description": "A continuous territory takeover game against bots.",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
