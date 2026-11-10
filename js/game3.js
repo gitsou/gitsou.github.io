@@ -32,8 +32,11 @@ const game = {
     newGameButton: null,
     difficultyButtons: [],
     modeButtons: [],
+    cellAnnouncer: null,
     timerId: null,
     state: null,
+    cursor: { x: 0, y: 0 },
+    showCursor: false,
 };
 
 const isDarkMode = () => window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -202,13 +205,17 @@ const loadState = () => {
 };
 
 const saveState = () => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        difficulty: game.state.difficulty,
-        mode: game.state.mode,
-        status: game.state.status,
-        elapsedSeconds: game.state.elapsedSeconds,
-        cells: game.state.cells,
-    }));
+    try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            difficulty: game.state.difficulty,
+            mode: game.state.mode,
+            status: game.state.status,
+            elapsedSeconds: game.state.elapsedSeconds,
+            cells: game.state.cells,
+        }));
+    } catch (error) {
+        window.console.warn("Could not save Minesweeper state.", error);
+    }
 };
 
 const startTimer = () => {
@@ -241,6 +248,7 @@ const confirmRestartIfPlaying = () => (
 const setDifficulty = (difficultyName) => {
     stopTimer();
     game.state = createNewState(difficultyName);
+    clampCursor();
     saveState();
     drawBoard();
     updateDisplay();
@@ -283,29 +291,78 @@ const revealCell = (x, y) => {
     }
 
     const cell = game.state.cells[getIndex(x, y)];
-    if (cell.revealed || cell.flagged) {
+    if (cell.revealed) {
+        chordCell(x, y);
+        return;
+    }
+
+    if (cell.flagged) {
         return;
     }
 
     beginIfNeeded();
 
     if (cell.mine) {
-        cell.revealed = true;
-        cell.exploded = true;
-        game.state.status = "lost";
-        revealMines();
-        stopTimer();
-        saveState();
-        drawBoard();
-        updateDisplay();
+        loseGame(cell);
         return;
     }
 
     revealSafeArea(x, y);
+    finishMove();
+};
+
+const finishMove = () => {
     checkWin();
     saveState();
     drawBoard();
     updateDisplay();
+};
+
+const loseGame = (explodedCell) => {
+    explodedCell.revealed = true;
+    explodedCell.exploded = true;
+    game.state.status = "lost";
+    revealMines();
+    stopTimer();
+    saveState();
+    drawBoard();
+    updateDisplay();
+};
+
+// Clicking a revealed number whose mines are all flagged opens its remaining neighbours.
+const chordCell = (x, y) => {
+    if (game.state.status !== "playing") {
+        return;
+    }
+
+    const cell = game.state.cells[getIndex(x, y)];
+    if (cell.adjacent === 0) {
+        return;
+    }
+
+    let flaggedNeighbors = 0;
+    const hiddenNeighbors = [];
+    forEachNeighbor(game.state, x, y, (nx, ny, neighborIndex) => {
+        const neighbor = game.state.cells[neighborIndex];
+        if (neighbor.flagged) {
+            flaggedNeighbors += 1;
+        } else if (!neighbor.revealed) {
+            hiddenNeighbors.push([nx, ny]);
+        }
+    });
+
+    if (flaggedNeighbors !== cell.adjacent || hiddenNeighbors.length === 0) {
+        return;
+    }
+
+    const minePosition = hiddenNeighbors.find(([nx, ny]) => game.state.cells[getIndex(nx, ny)].mine);
+    if (minePosition) {
+        loseGame(game.state.cells[getIndex(minePosition[0], minePosition[1])]);
+        return;
+    }
+
+    hiddenNeighbors.forEach(([nx, ny]) => revealSafeArea(nx, ny));
+    finishMove();
 };
 
 const revealSafeArea = (startX, startY) => {
@@ -422,6 +479,18 @@ const drawBoard = () => {
             drawCell(x, y);
         }
     }
+
+    if (game.showCursor) {
+        drawCursor();
+    }
+};
+
+const drawCursor = () => {
+    const left = game.cursor.x * CELL_SIZE;
+    const top = game.cursor.y * CELL_SIZE;
+    game.ctx.strokeStyle = isDarkMode() ? "#f3a800" : "#d18f00";
+    game.ctx.lineWidth = 3;
+    game.ctx.strokeRect(left + 1.5, top + 1.5, CELL_SIZE - 3, CELL_SIZE - 3);
 };
 
 const drawCell = (x, y) => {
@@ -536,12 +605,98 @@ const handleCanvasClick = (event) => {
         return;
     }
 
-    if (game.state.mode === "flag") {
-        toggleFlag(position.x, position.y);
+    game.cursor = position;
+    actOnCell(position.x, position.y);
+};
+
+const actOnCell = (x, y) => {
+    const cell = game.state.cells[getIndex(x, y)];
+    if (game.state.mode === "flag" && !cell.revealed) {
+        toggleFlag(x, y);
         return;
     }
 
-    revealCell(position.x, position.y);
+    revealCell(x, y);
+};
+
+const describeCell = (x, y) => {
+    const cell = game.state.cells[getIndex(x, y)];
+    let description = "hidden";
+    if (cell.flagged && !cell.revealed) {
+        description = "flagged";
+    } else if (cell.revealed && cell.mine) {
+        description = "mine";
+    } else if (cell.revealed) {
+        description = cell.adjacent > 0 ? String(cell.adjacent) : "empty";
+    }
+
+    return `Row ${y + 1}, column ${x + 1}: ${description}`;
+};
+
+const announceCursor = () => {
+    game.cellAnnouncer.textContent = describeCell(game.cursor.x, game.cursor.y);
+};
+
+const scrollCursorIntoView = () => {
+    const container = game.canvas.parentElement;
+    const left = game.cursor.x * CELL_SIZE;
+    const top = game.cursor.y * CELL_SIZE;
+
+    if (left < container.scrollLeft) {
+        container.scrollLeft = left;
+    } else if (left + CELL_SIZE > container.scrollLeft + container.clientWidth) {
+        container.scrollLeft = left + CELL_SIZE - container.clientWidth;
+    }
+
+    if (top < container.scrollTop) {
+        container.scrollTop = top;
+    } else if (top + CELL_SIZE > container.scrollTop + container.clientHeight) {
+        container.scrollTop = top + CELL_SIZE - container.clientHeight;
+    }
+};
+
+const keyMoves = {
+    ArrowLeft: [-1, 0],
+    ArrowRight: [1, 0],
+    ArrowUp: [0, -1],
+    ArrowDown: [0, 1],
+};
+
+const handleBoardKeydown = (event) => {
+    const { x, y } = game.cursor;
+
+    if (keyMoves[event.key]) {
+        event.preventDefault();
+        const [dx, dy] = keyMoves[event.key];
+        game.cursor = {
+            x: Math.min(game.state.columns - 1, Math.max(0, x + dx)),
+            y: Math.min(game.state.rows - 1, Math.max(0, y + dy)),
+        };
+        drawBoard();
+        scrollCursorIntoView();
+        announceCursor();
+        return;
+    }
+
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        actOnCell(x, y);
+        announceCursor();
+        return;
+    }
+
+    if (event.key === "f" || event.key === "F") {
+        event.preventDefault();
+        toggleFlag(x, y);
+        announceCursor();
+    }
+};
+
+const clampCursor = () => {
+    game.cursor = {
+        x: Math.min(game.cursor.x, game.state.columns - 1),
+        y: Math.min(game.cursor.y, game.state.rows - 1),
+    };
 };
 
 const handleContextMenu = (event) => {
@@ -578,6 +733,24 @@ const setupControls = () => {
     });
     game.canvas.addEventListener("click", handleCanvasClick);
     game.canvas.addEventListener("contextmenu", handleContextMenu);
+    game.canvas.addEventListener("keydown", handleBoardKeydown);
+    game.canvas.addEventListener("focus", () => {
+        game.showCursor = game.canvas.matches(":focus-visible");
+        drawBoard();
+        if (game.showCursor) {
+            announceCursor();
+        }
+    });
+    game.canvas.addEventListener("keyup", () => {
+        if (!game.showCursor) {
+            game.showCursor = true;
+            drawBoard();
+        }
+    });
+    game.canvas.addEventListener("blur", () => {
+        game.showCursor = false;
+        drawBoard();
+    });
     window.addEventListener("resize", drawBoard);
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -600,6 +773,7 @@ const init = () => {
     game.timeCounter = document.getElementById("timeCounter");
     game.statusLine = document.getElementById("statusLine");
     game.newGameButton = document.getElementById("newGameButton");
+    game.cellAnnouncer = document.getElementById("cellAnnouncer");
     game.difficultyButtons = Array.from(document.querySelectorAll("[data-difficulty]"));
     game.modeButtons = Array.from(document.querySelectorAll("[data-mode]"));
     game.state = loadState() || createNewState("beginner");

@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper – Classic Canvas Game</title>
     <meta name="description" content="A classic canvas Minesweeper game with Beginner, Intermediate, and Expert difficulty levels.">
@@ -16,11 +15,11 @@
     <meta name="twitter:description" content="A classic canvas Minesweeper game with Beginner, Intermediate, and Expert difficulty levels.">
 
     <link rel="stylesheet" href="css/site.css">
-    <link rel="stylesheet" href="css/game3.css">
+    <link rel="stylesheet" href="css/game3.css?v=20261110">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
-            async src="//gc.zgo.at/count.js"></script>
+            async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
     <header class="site-header">
@@ -28,6 +27,7 @@
             <a class="brand" href="index.html">Jacek Ziemiański</a>
             <a href="index.html">Home</a>
             <a href="experiments.html" aria-current="page">Experiments</a>
+            <a href="notes.html">Notes</a>
             <a href="links.html">Links</a>
             <a href="about.html">About</a>
         </nav>
@@ -47,7 +47,7 @@
                 <button type="button" data-difficulty="expert">Expert</button>
             </div>
 
-            <div class="score-panel" aria-live="polite">
+            <div class="score-panel">
                 <div class="counter" aria-label="Mines remaining">
                     <span id="mineCounter">010</span>
                 </div>
@@ -65,10 +65,13 @@
             <p id="statusLine" class="status-line" aria-live="polite">Reveal a square to start.</p>
 
             <div class="board-scroll">
-                <canvas id="minesweeperBoard" aria-label="Minesweeper board"></canvas>
+                <canvas id="minesweeperBoard" tabindex="0" aria-label="Minesweeper board. Use arrow keys to move, Enter or Space to act, and F to flag." aria-describedby="boardHelp"></canvas>
             </div>
+            <p id="cellAnnouncer" class="visually-hidden" aria-live="polite"></p>
 
-            <p class="storage-note">This game stores the current board in your browser's local storage so you can resume it. Nothing is sent anywhere.</p>
+            <p id="boardHelp" class="board-help">Click a revealed number when all its mines are flagged to open the remaining squares around it. Keyboard: focus the board, move with the arrow keys, press Enter or Space to act, and F to flag.</p>
+
+            <p class="storage-note">This game stores the current board in your browser's local storage so you can resume it. Game data never leaves your device. The site uses cookie-free, anonymous visit counting (<a href="about.html#privacy">details</a>).</p>
         </section>
     </main>
 
@@ -76,6 +79,6 @@
         <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
     </footer>
 
-    <script src="js/game3.js"></script>
+    <script src="js/game3.js?v=20261110"></script>
 </body>
 </html>
