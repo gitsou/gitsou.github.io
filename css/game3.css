@@ -131,13 +131,8 @@
     outline-offset: 3px;
 }
 
-.board-help {
-    max-width: 560px;
-    margin: 12px auto 0;
-    color: var(--muted);
-    font-size: 0.85rem;
-    line-height: 1.45;
-    text-align: center;
+.minesweeper-shell .intro {
+    margin-bottom: 20px;
 }
 
 .visually-hidden {

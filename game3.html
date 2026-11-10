@@ -15,7 +15,7 @@
     <meta name="twitter:description" content="A classic canvas Minesweeper game with Beginner, Intermediate, and Expert difficulty levels.">
 
     <link rel="stylesheet" href="css/site.css">
-    <link rel="stylesheet" href="css/game3.css?v=20261110">
+    <link rel="stylesheet" href="css/game3.css?v=20261110b">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
@@ -36,7 +36,6 @@
     <main class="game-shell minesweeper-shell">
         <section class="intro">
             <h1>Minesweeper</h1>
-            <p class="lead">A classic canvas Minesweeper with saved progress.</p>
         </section>
 
         <section class="minesweeper-panel" aria-label="Minesweeper game">
@@ -64,11 +63,9 @@
             <p id="statusLine" class="status-line" aria-live="polite">Reveal a square to start.</p>
 
             <div class="board-scroll">
-                <canvas id="minesweeperBoard" tabindex="0" aria-label="Minesweeper board. Use arrow keys to move, Enter or Space to act, and F to flag." aria-describedby="boardHelp"></canvas>
+                <canvas id="minesweeperBoard" tabindex="0" aria-label="Minesweeper board. Use arrow keys to move, Enter or Space to act, and F to flag."></canvas>
             </div>
             <p id="cellAnnouncer" class="visually-hidden" aria-live="polite"></p>
-
-            <p id="boardHelp" class="board-help">Click a revealed number when all its mines are flagged to open the remaining squares around it. Keyboard: focus the board, move with the arrow keys, press Enter or Space to act, and F to flag.</p>
 
             <p class="storage-note">This game stores the current board in your browser's local storage so you can resume it. Game data never leaves your device. The site uses cookie-free, anonymous visit counting (<a href="about.html#privacy">details</a>).</p>
         </section>
