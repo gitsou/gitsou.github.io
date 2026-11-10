@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medieval Merchant Clicker – Browser Incremental Game</title>
     <meta name="description" content="Rise from roadside trade to a merchant network in this medieval trade career clicker game.">
@@ -17,11 +16,11 @@
     <meta name="twitter:description" content="Rise from roadside trade to a merchant network in this medieval trade career clicker game.">
 
     <link rel="stylesheet" href="css/site.css">
-    <link rel="stylesheet" href="css/game2.css">
+    <link rel="stylesheet" href="css/game2.css?v=20261110">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
-            async src="//gc.zgo.at/count.js"></script>
+            async src="https://gc.zgo.at/count.js"></script>
 </head>
 
 <body>
@@ -30,6 +29,7 @@
             <a class="brand" href="index.html">Jacek Ziemiański</a>
             <a href="index.html">Home</a>
             <a href="experiments.html" aria-current="page">Experiments</a>
+            <a href="notes.html">Notes</a>
             <a href="links.html">Links</a>
             <a href="about.html">About</a>
         </nav>
@@ -45,10 +45,10 @@
         <section class="game-panel" aria-labelledby="work-heading">
             <h2 id="work-heading">Work</h2>
             <p class="money-row">
-                Money: <strong class="money">0</strong>$
+                Money: <strong class="money">$0</strong>
             </p>
             <p class="income-row">
-                Auto income: <strong class="income">0</strong>$/s
+                Auto income: <strong class="income">$0</strong>/s
             </p>
             <p class="feedback-line" aria-live="polite">
                 <span class="last-gain">Ready.</span>
@@ -57,14 +57,14 @@
                 <button type="button" class="secondary-button" onclick="resetGame()">Reset game</button>
             </div>
             <div class="work-buttons" id="work-buttons"></div>
-            <p class="storage-note">This game stores your progress in your browser's local storage so you can resume it. Nothing is sent anywhere.</p>
+            <p class="storage-note">This game stores your progress in your browser's local storage so you can resume it. Game data never leaves your device. The site uses cookie-free, anonymous visit counting (<a href="about.html#privacy">details</a>).</p>
         </section>
     </main>
     <footer class="site-footer">
         <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
     </footer>
 
-    <script src="js/game2.js"></script>
+    <script src="js/game2.js?v=20261110"></script>
 </body>
 
 </html>

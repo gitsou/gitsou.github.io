@@ -17,7 +17,8 @@ const getWorkAmount = (work) => work.baseAmount * Math.max(work.level, 1);
 
 const getWorkPrice = (work) => Math.ceil(work.basePrice * Math.pow(1.75, work.level));
 
-const getAutoPrice = (work) => Math.ceil(work.baseAutoPrice * Math.pow(1.6, Math.max(work.level - 1, 0)));
+// Automation has a fixed price, so upgrading a job first never makes automating it more expensive.
+const getAutoPrice = (work) => work.baseAutoPrice;
 
 const formatNumber = (value) => {
     const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi"];
@@ -72,16 +73,20 @@ const saveGame = () => {
         }))
     };
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(saveState));
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saveState));
+    } catch (error) {
+        window.console.warn("Could not save clicker progress.", error);
+    }
 }
 
 const loadGame = () => {
-    const saveState = localStorage.getItem(STORAGE_KEY);
-    if (!saveState) {
-        return;
-    }
-
     try {
+        const saveState = localStorage.getItem(STORAGE_KEY);
+        if (!saveState) {
+            return;
+        }
+
         const parsedState = JSON.parse(saveState);
         if (Number.isFinite(parsedState.totalMoney)) {
             gameStates.totalMoney = parsedState.totalMoney;
@@ -115,8 +120,13 @@ const loadGame = () => {
                 }
             }
         }
-    } catch {
-        localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+        window.console.warn("Could not load clicker progress.", error);
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch {
+            // Storage is unavailable; continue with a fresh game.
+        }
     }
 }
 
@@ -126,7 +136,11 @@ const resetGame = () => {
         return;
     }
 
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch {
+        // Storage is unavailable; the in-memory reset below is enough.
+    }
     gameStates.totalMoney = 0;
     gameStates.lastTickTime = Date.now();
     gameStates.offlineMessage = null;
@@ -261,8 +275,8 @@ const updateButtons = (work, index) => {
 }
 
 const updateView = () => {
-    gameStates.totalMoneyElem.textContent = formatNumber(gameStates.totalMoney);
-    gameStates.incomeElem.textContent = formatNumber(getAutoIncome());
+    gameStates.totalMoneyElem.textContent = formatMoney(gameStates.totalMoney);
+    gameStates.incomeElem.textContent = formatMoney(getAutoIncome());
 
     gameStates.work.forEach((work, index) => {
         updateButtons(work, index);
@@ -341,6 +355,9 @@ const main = () => {
     updateView();
     if (gameStates.offlineMessage) {
         showGain(gameStates.offlineMessage, true);
+        window.setTimeout(() => {
+            gameStates.offlineMessage = null;
+        }, 5000);
     }
     gameStates.lastTickTime = Date.now();
     setTimeout(clickerLoop, 1000);
