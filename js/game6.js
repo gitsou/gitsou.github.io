@@ -441,7 +441,6 @@ if (typeof document !== "undefined") {
         pad: document.getElementById("numberPad"),
         levelButtons: [...document.querySelectorAll("[data-level]")],
         dailyButton: document.getElementById("dailyButton"),
-        newGameButton: document.getElementById("newGameButton"),
         copyLinkButton: document.getElementById("copyLinkButton"),
         undoButton: document.getElementById("undoButton"),
         eraseButton: document.getElementById("eraseButton"),
@@ -646,7 +645,8 @@ if (typeof document !== "undefined") {
         elements.dailyButton.setAttribute("aria-pressed", String(Boolean(state.daily)));
 
         elements.puzzleLabel.textContent = puzzleName(state);
-        elements.hintCounter.textContent = `Hints: ${state.hints}`;
+        elements.hintCounter.hidden = state.hints === 0;
+        elements.hintCounter.textContent = state.hints === 1 ? "1 hint" : `${state.hints} hints`;
         updateTimer();
 
         elements.winPanel.hidden = !won;
@@ -726,7 +726,7 @@ if (typeof document !== "undefined") {
         if (state.values.every(Boolean) && isSolved(state)) {
             state.status = "won";
             stopTimer();
-            setStatus("Solved! Well done.");
+            setStatus("Solved! Pick a level to play a new puzzle.");
         } else if (conflictsOf(state.values).has(state.selected)) {
             setStatus("That number clashes with another one in the same row, column, or box.");
         } else {
@@ -842,6 +842,16 @@ if (typeof document !== "undefined") {
 
     const copyLink = async () => {
         const url = shareUrl(game.state);
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: `Sudoku – ${puzzleName(game.state)}`, url });
+                return;
+            } catch (error) {
+                if (error.name === "AbortError") {
+                    return;
+                }
+            }
+        }
         try {
             await navigator.clipboard.writeText(url);
             setStatus("Link copied. Anyone who opens it gets this puzzle.");
@@ -911,7 +921,6 @@ if (typeof document !== "undefined") {
         button.addEventListener("click", () => newRandomGame(button.dataset.level));
     });
     elements.dailyButton.addEventListener("click", newDailyGame);
-    elements.newGameButton.addEventListener("click", () => newRandomGame(game.state.level));
     elements.copyLinkButton.addEventListener("click", copyLink);
     elements.undoButton.addEventListener("click", undo);
     elements.eraseButton.addEventListener("click", erase);
@@ -963,7 +972,7 @@ if (typeof document !== "undefined") {
         if (saved) {
             game.state = saved;
             render();
-            setStatus(saved.status === "won" ? "Solved! Start a new game when you are ready." : "Welcome back. Your game was restored.");
+            setStatus(saved.status === "won" ? "Solved! Pick a level to play a new puzzle." : "Welcome back. Your game was restored.");
             startTimer();
             return;
         }

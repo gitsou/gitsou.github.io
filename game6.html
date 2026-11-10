@@ -15,7 +15,7 @@
     <meta name="twitter:description" content="A Sudoku game with Easy, Medium, and Hard puzzles, a daily puzzle, notes, hints, and shareable puzzle links.">
 
     <link rel="stylesheet" href="css/site.css">
-    <link rel="stylesheet" href="css/game6.css?v=20261110">
+    <link rel="stylesheet" href="css/game6.css?v=20261110b">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
@@ -35,9 +35,7 @@
 
     <main class="game-shell sudoku-shell">
         <section class="intro">
-            <p class="eyebrow">Experiment</p>
             <h1>Sudoku</h1>
-            <p class="lead">Fill every row, column, and box with the numbers 1 to 9.</p>
         </section>
 
         <section class="sudoku-panel" aria-label="Sudoku game">
@@ -50,7 +48,8 @@
 
             <div class="sudoku-info">
                 <span id="puzzleLabel" class="puzzle-label">Sudoku</span>
-                <span id="hintCounter" class="hint-counter">Hints: 0</span>
+                <span id="hintCounter" class="hint-counter" hidden></span>
+                <button type="button" id="copyLinkButton" class="link-button">Share</button>
                 <span id="timeCounter" class="time-counter" aria-label="Elapsed time">00:00</span>
             </div>
 
@@ -70,14 +69,8 @@
                         <p class="win-title">Puzzle solved!</p>
                         <p id="winSummary"></p>
                     </div>
-                    <div class="game-actions">
-                        <button type="button" id="newGameButton">New game</button>
-                        <button type="button" id="copyLinkButton">Copy link</button>
-                    </div>
                 </div>
             </div>
-
-            <p class="board-help">Tap a cell, then a number. Notes mode writes small pencil marks instead. Keyboard: arrow keys move, 1–9 fill, Backspace erases, N switches notes, Ctrl+Z undoes. Copy link shares the exact puzzle; the daily puzzle is the same for everyone.</p>
 
             <p class="storage-note">This game stores the current puzzle in your browser's local storage so you can resume it. Game data never leaves your device. The site uses cookie-free, anonymous visit counting (<a href="about.html#privacy">details</a>).</p>
         </section>
@@ -87,6 +80,6 @@
         <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
     </footer>
 
-    <script src="js/game6.js?v=20261110"></script>
+    <script src="js/game6.js?v=20261110b"></script>
 </body>
 </html>
