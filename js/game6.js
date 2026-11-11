@@ -566,7 +566,7 @@ if (typeof document !== "undefined") {
             button.type = "button";
             button.className = "pad-button";
             button.dataset.digit = String(digit);
-            button.innerHTML = `<span class="pad-digit">${digit}</span><span class="pad-left"></span>`;
+            button.textContent = String(digit);
             game.padButtons.push(button);
             elements.pad.append(button);
         }
@@ -579,13 +579,9 @@ if (typeof document !== "undefined") {
         const given = Boolean(state.puzzle[index]);
         const selected = state.selected;
         const selectedDigit = state.values[selected];
-        const related = rowOf(index) === rowOf(selected)
-            || colOf(index) === colOf(selected)
-            || boxOf(index) === boxOf(selected);
 
         cell.classList.toggle("given", given);
         cell.classList.toggle("selected", index === selected);
-        cell.classList.toggle("related", related && index !== selected);
         cell.classList.toggle("same-digit", Boolean(digit) && digit === selectedDigit && index !== selected);
         cell.classList.toggle("conflict", context.conflicts.has(index));
         cell.tabIndex = index === selected ? 0 : -1;
@@ -622,7 +618,6 @@ if (typeof document !== "undefined") {
         game.padButtons.forEach((button, i) => {
             const digit = i + 1;
             const left = Math.max(0, SIZE - counts[digit]);
-            button.querySelector(".pad-left").textContent = left ? String(left) : "";
             button.classList.toggle("complete", left === 0);
             button.setAttribute("aria-label", `${digit}, ${left} left`);
         });

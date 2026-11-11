@@ -7,11 +7,10 @@
 }
 
 .sudoku-panel {
-    --cell-related: var(--surface-muted);
-    --cell-same: color-mix(in srgb, var(--accent) 22%, var(--surface));
-    --cell-selected: color-mix(in srgb, var(--accent) 38%, var(--surface));
-    --grid-line: color-mix(in srgb, var(--text) 18%, var(--surface));
-    --grid-box: color-mix(in srgb, var(--text) 70%, var(--surface));
+    --cell-same: color-mix(in srgb, var(--accent) 20%, var(--surface));
+    --cell-selected: color-mix(in srgb, var(--accent) 36%, var(--surface));
+    --grid-line: color-mix(in srgb, var(--text) 30%, var(--surface));
+    --grid-box: color-mix(in srgb, var(--text) 85%, var(--surface));
 
     width: fit-content;
     max-width: 100%;
@@ -128,8 +127,8 @@
     border-radius: 0;
     background: var(--surface);
     color: var(--accent-dark);
-    font-size: 6.4cqw;
-    font-weight: 500;
+    font-size: 8cqw;
+    font-weight: 600;
     line-height: 1;
     transition: none;
     -webkit-tap-highlight-color: transparent;
@@ -168,16 +167,13 @@
     font-weight: 700;
 }
 
-.sudoku-cell.related {
-    background: var(--cell-related);
-}
-
 .sudoku-cell.same-digit {
     background: var(--cell-same);
 }
 
 .sudoku-cell.selected {
     background: var(--cell-selected);
+    box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 .sudoku-cell.conflict {
@@ -194,7 +190,7 @@
 }
 
 .notes-mode .sudoku-cell.selected {
-    box-shadow: inset 0 0 0 2px var(--accent);
+    box-shadow: inset 0 0 0 3px var(--accent);
 }
 
 .notes {
@@ -203,8 +199,8 @@
     width: 100%;
     height: 100%;
     padding: 2px;
-    color: var(--muted);
-    font-size: 2.6cqw;
+    color: var(--text);
+    font-size: 3.3cqw;
     font-weight: 600;
 }
 
@@ -240,30 +236,17 @@
 }
 
 .sudoku-panel .pad-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 54px;
-    padding: 2px 0;
+    min-height: 68px;
+    padding: 0;
     background: var(--surface);
-    line-height: 1.1;
-}
-
-.pad-digit {
     color: var(--accent-dark);
-    font-size: 1.45rem;
-}
-
-.pad-left {
-    min-height: 1em;
-    color: var(--muted);
-    font-size: 0.7rem;
+    font-size: 2.1rem;
     font-weight: 600;
+    line-height: 1;
 }
 
 .sudoku-panel .pad-button.complete {
-    opacity: 0.4;
+    opacity: 0.35;
 }
 
 .status-line {
@@ -324,7 +307,7 @@
     }
 
     .sudoku-panel .pad-button {
-        min-height: 64px;
+        min-height: 72px;
     }
 
     .tool-bar {
@@ -354,7 +337,7 @@
 
 @media (max-width: 560px) {
     .sudoku-shell {
-        width: calc(100% - 16px);
+        width: calc(100% - 8px);
         padding-top: 20px;
     }
 
@@ -364,7 +347,15 @@
 
     .sudoku-panel {
         width: 100%;
-        padding: 10px;
+        padding: 0;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .sudoku-panel .storage-note {
+        padding: 0 8px;
     }
 
     .sudoku-board,
@@ -373,10 +364,13 @@
     }
 
     .sudoku-panel .pad-button {
-        min-height: 50px;
+        min-height: 68px;
+        font-size: 2.1rem;
     }
 
-    .pad-digit {
-        font-size: 1.3rem;
+    .sudoku-shell .intro,
+    .level-bar,
+    .sudoku-info {
+        padding: 0 4px;
     }
 }
