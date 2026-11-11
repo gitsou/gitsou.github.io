@@ -15,7 +15,7 @@
     <meta name="twitter:description" content="A Sudoku game with Easy, Medium, and Hard puzzles, a daily puzzle, notes, hints, and shareable puzzle links.">
 
     <link rel="stylesheet" href="css/site.css">
-    <link rel="stylesheet" href="css/game6.css?v=20261111">
+    <link rel="stylesheet" href="css/game6.css?v=20261111b">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <script data-goatcounter="https://cookietower.goatcounter.com/count"
@@ -44,6 +44,12 @@
                 <button type="button" data-level="medium">Medium</button>
                 <button type="button" data-level="hard">Hard</button>
                 <button type="button" id="dailyButton">Daily</button>
+            </div>
+
+            <div id="confirmBar" class="confirm-bar" role="alert" hidden>
+                <span id="confirmText"></span>
+                <button type="button" id="confirmYes">Yes</button>
+                <button type="button" id="confirmNo">Cancel</button>
             </div>
 
             <div class="sudoku-info">
@@ -80,6 +86,6 @@
         <p>Created by Jacek Ziemiański. &copy; 2025-2026</p>
     </footer>
 
-    <script src="js/game6.js?v=20261111"></script>
+    <script src="js/game6.js?v=20261111b"></script>
 </body>
 </html>

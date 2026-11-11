@@ -450,6 +450,10 @@ if (typeof document !== "undefined") {
         timer: document.getElementById("timeCounter"),
         hintCounter: document.getElementById("hintCounter"),
         statusLine: document.getElementById("statusLine"),
+        confirmBar: document.getElementById("confirmBar"),
+        confirmText: document.getElementById("confirmText"),
+        confirmYes: document.getElementById("confirmYes"),
+        confirmNo: document.getElementById("confirmNo"),
         winPanel: document.getElementById("winPanel"),
         winSummary: document.getElementById("winSummary"),
     };
@@ -654,6 +658,7 @@ if (typeof document !== "undefined") {
     /* 7. Actions */
 
     const startGame = (state, message) => {
+        closeConfirm();
         stopTimer();
         game.state = state;
         render();
@@ -662,16 +667,34 @@ if (typeof document !== "undefined") {
         startTimer();
     };
 
-    const confirmReplace = () => (
-        !hasProgress(game.state) || window.confirm("End the current game and start a new one?")
-    );
+    // In-page confirmation (native dialogs are awkward on phones and in
+    // embedded browsers). Asking again replaces the pending question.
+    let pendingAction = null;
+
+    const closeConfirm = () => {
+        pendingAction = null;
+        elements.confirmBar.hidden = true;
+    };
+
+    const askConfirm = (text, onYes) => {
+        pendingAction = onYes;
+        elements.confirmText.textContent = text;
+        elements.confirmBar.hidden = false;
+    };
+
+    // Runs `action` now, or after a confirmation when a game is in progress.
+    const replaceGame = (action) => {
+        if (hasProgress(game.state)) {
+            askConfirm("Start a new puzzle? Your current game will be lost.", action);
+        } else {
+            action();
+        }
+    };
 
     const newRandomGame = (level) => {
-        if (!confirmReplace()) {
-            return;
-        }
-        const state = createRandomGame(level);
-        startGame(state, `New ${LEVELS[level].label.toLowerCase()} puzzle. Select a cell, then a number.`);
+        replaceGame(() => {
+            startGame(createRandomGame(level), `New ${LEVELS[level].label.toLowerCase()} puzzle. Select a cell, then a number.`);
+        });
     };
 
     const newDailyGame = () => {
@@ -682,10 +705,9 @@ if (typeof document !== "undefined") {
                 : "You are already playing today's puzzle.");
             return;
         }
-        if (!confirmReplace()) {
-            return;
-        }
-        startGame(createDailyGame(date), "Today's puzzle. Everyone gets the same one.");
+        replaceGame(() => {
+            startGame(createDailyGame(date), "Today's puzzle. Everyone gets the same one.");
+        });
     };
 
     // Applies a list of [index, value, notes] changes and records the old
@@ -917,6 +939,14 @@ if (typeof document !== "undefined") {
     });
     elements.dailyButton.addEventListener("click", newDailyGame);
     elements.copyLinkButton.addEventListener("click", copyLink);
+    elements.confirmYes.addEventListener("click", () => {
+        const action = pendingAction;
+        closeConfirm();
+        if (action) {
+            action();
+        }
+    });
+    elements.confirmNo.addEventListener("click", closeConfirm);
     elements.undoButton.addEventListener("click", undo);
     elements.eraseButton.addEventListener("click", erase);
     elements.notesButton.addEventListener("click", toggleNotes);
@@ -932,7 +962,7 @@ if (typeof document !== "undefined") {
     });
     window.addEventListener("pagehide", saveState);
 
-    /* Start: a shared link wins over the saved game, after a confirmation. */
+    /* Start: a shared link replaces a game in progress only after a confirmation. */
 
     const gameFromUrl = () => {
         const params = new URLSearchParams(window.location.search);
@@ -958,9 +988,12 @@ if (typeof document !== "undefined") {
         const sameAsSaved = saved && linked
             && saved.level === linked.level && saved.seed === linked.seed && saved.daily === linked.daily;
 
-        if (linked && !sameAsSaved && (!saved || !hasProgress(saved)
-            || window.confirm("Open the shared puzzle? Your current game will be replaced."))) {
+        const openLinked = () => {
             startGame(createGame(linked), "Shared puzzle loaded. Select a cell, then a number.");
+        };
+
+        if (linked && !sameAsSaved && (!saved || !hasProgress(saved))) {
+            openLinked();
             return;
         }
 
@@ -969,6 +1002,9 @@ if (typeof document !== "undefined") {
             render();
             setStatus(saved.status === "won" ? "Solved! Pick a level to play a new puzzle." : "Welcome back. Your game was restored.");
             startTimer();
+            if (linked && !sameAsSaved) {
+                askConfirm("Open the shared puzzle? Your current game will be lost.", openLinked);
+            }
             return;
         }
 

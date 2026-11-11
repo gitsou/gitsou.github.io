@@ -59,6 +59,39 @@
     margin-bottom: 12px;
 }
 
+.confirm-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: var(--btn-affordable-bg);
+    border: 1px solid var(--btn-affordable-border);
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.confirm-bar[hidden] {
+    display: none;
+}
+
+.confirm-bar span {
+    margin-right: auto;
+    font-size: 0.9rem;
+    line-height: 1.25;
+}
+
+.sudoku-panel .confirm-bar button {
+    min-height: 40px;
+    padding: 4px 14px;
+}
+
+.sudoku-panel #confirmYes {
+    border-color: var(--accent-dark);
+    background: var(--accent);
+    color: #fff;
+}
+
 .sudoku-info {
     display: flex;
     align-items: center;
@@ -372,5 +405,10 @@
     .level-bar,
     .sudoku-info {
         padding: 0 4px;
+    }
+
+    .confirm-bar {
+        margin-left: 4px;
+        margin-right: 4px;
     }
 }
