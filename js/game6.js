@@ -285,6 +285,8 @@ const generatePuzzle = (level, seed) => {
 /* 5. Game state, saving and loading ------------------------------- */
 
 const STORAGE_KEY = "sudoku-state";
+const SETTINGS_KEY = "sudoku-settings";
+const DAILY_KEY = "sudoku-daily-done";
 const SAVE_VERSION = 1;
 const MAX_HISTORY = 300;
 const MAX_SECONDS = 99 * 3600;
@@ -426,6 +428,21 @@ const conflictsOf = (values) => {
 
 const isSolved = (state) => state.values.every((digit, index) => digit === state.solution[index]);
 
+// Cells to draw in red: with "show mistakes" the numbers you entered that
+// differ from the solution, otherwise every number clashing with a rule.
+const markedCells = (state, showMistakes) => {
+    if (!showMistakes) {
+        return conflictsOf(state.values);
+    }
+    const marked = new Set();
+    state.values.forEach((digit, index) => {
+        if (digit && !state.puzzle[index] && digit !== state.solution[index]) {
+            marked.add(index);
+        }
+    });
+    return marked;
+};
+
 const hasProgress = (state) => state.status === "playing" && state.history.length > 0;
 
 /* Node export for the generator test script; the browser skips it. */
@@ -446,6 +463,7 @@ if (typeof document !== "undefined") {
         eraseButton: document.getElementById("eraseButton"),
         notesButton: document.getElementById("notesButton"),
         hintButton: document.getElementById("hintButton"),
+        mistakesButton: document.getElementById("mistakesButton"),
         puzzleLabel: document.getElementById("puzzleLabel"),
         timer: document.getElementById("timeCounter"),
         hintCounter: document.getElementById("hintCounter"),
@@ -484,6 +502,30 @@ if (typeof document !== "undefined") {
             window.console.warn("Could not load Sudoku state.", error);
             return null;
         }
+    };
+
+    // Preferences and the daily puzzle record live apart from the saved game.
+    const readStored = (key) => {
+        try {
+            return JSON.parse(window.localStorage.getItem(key));
+        } catch (error) {
+            return null;
+        }
+    };
+
+    const writeStored = (key, value) => {
+        try {
+            window.localStorage.setItem(key, JSON.stringify(value));
+        } catch (error) {
+            window.console.warn("Could not save Sudoku settings.", error);
+        }
+    };
+
+    const settings = { showMistakes: Boolean(readStored(SETTINGS_KEY)?.showMistakes) };
+
+    const dailyDone = () => {
+        const record = readStored(DAILY_KEY);
+        return record && record.date === todayString() ? record : null;
     };
 
     /* Timer */
@@ -587,14 +629,14 @@ if (typeof document !== "undefined") {
         cell.classList.toggle("given", given);
         cell.classList.toggle("selected", index === selected);
         cell.classList.toggle("same-digit", Boolean(digit) && digit === selectedDigit && index !== selected);
-        cell.classList.toggle("conflict", context.conflicts.has(index));
+        cell.classList.toggle("conflict", context.marked.has(index));
         cell.tabIndex = index === selected ? 0 : -1;
 
         const position = `Row ${rowOf(index) + 1}, column ${colOf(index) + 1}`;
         if (digit) {
             cell.textContent = String(digit);
             const kind = given ? "given" : "entered";
-            const warning = context.conflicts.has(index) ? ", conflict" : "";
+            const warning = context.marked.has(index) ? (settings.showMistakes ? ", wrong" : ", conflict") : "";
             cell.setAttribute("aria-label", `${position}: ${digit}, ${kind}${warning}`);
         } else if (state.notes[index]) {
             const noteDigits = digitsOf(state.notes[index]);
@@ -610,7 +652,7 @@ if (typeof document !== "undefined") {
 
     const render = () => {
         const { state } = game;
-        const context = { conflicts: conflictsOf(state.values) };
+        const context = { marked: markedCells(state, settings.showMistakes) };
         for (let index = 0; index < CELLS; index += 1) {
             renderCell(index, context);
         }
@@ -642,6 +684,8 @@ if (typeof document !== "undefined") {
             button.setAttribute("aria-pressed", String(!state.daily && button.dataset.level === state.level));
         });
         elements.dailyButton.setAttribute("aria-pressed", String(Boolean(state.daily)));
+        elements.dailyButton.textContent = dailyDone() ? "Daily ✓" : "Daily";
+        elements.mistakesButton.setAttribute("aria-pressed", String(settings.showMistakes));
 
         elements.puzzleLabel.textContent = puzzleName(state);
         elements.hintCounter.hidden = state.hints === 0;
@@ -699,10 +743,13 @@ if (typeof document !== "undefined") {
 
     const newDailyGame = () => {
         const date = todayString();
+        const done = dailyDone();
+        if (done) {
+            setStatus(`You solved today's puzzle in ${formatTime(done.seconds)}. Come back tomorrow.`);
+            return;
+        }
         if (game.state.daily === date) {
-            setStatus(game.state.status === "won"
-                ? "You have already solved today's puzzle. Come back tomorrow."
-                : "You are already playing today's puzzle.");
+            setStatus("You are already playing today's puzzle.");
             return;
         }
         replaceGame(() => {
@@ -743,9 +790,14 @@ if (typeof document !== "undefined") {
         if (state.values.every(Boolean) && isSolved(state)) {
             state.status = "won";
             stopTimer();
+            if (state.daily && state.daily === todayString()) {
+                writeStored(DAILY_KEY, { date: state.daily, seconds: state.elapsedSeconds, hints: state.hints });
+            }
             setStatus("Solved! Pick a level to play a new puzzle.");
-        } else if (conflictsOf(state.values).has(state.selected)) {
-            setStatus("That number clashes with another one in the same row, column, or box.");
+        } else if (markedCells(state, settings.showMistakes).has(state.selected)) {
+            setStatus(settings.showMistakes
+                ? "That number doesn't belong there."
+                : "That number clashes with another one in the same row, column, or box.");
         } else {
             setStatus("");
         }
@@ -947,6 +999,14 @@ if (typeof document !== "undefined") {
         }
     });
     elements.confirmNo.addEventListener("click", closeConfirm);
+    elements.mistakesButton.addEventListener("click", () => {
+        settings.showMistakes = !settings.showMistakes;
+        writeStored(SETTINGS_KEY, { showMistakes: settings.showMistakes });
+        render();
+        setStatus(settings.showMistakes
+            ? "Wrong numbers will show in red."
+            : "Wrong numbers are no longer marked. Only clashes show in red.");
+    });
     elements.undoButton.addEventListener("click", undo);
     elements.eraseButton.addEventListener("click", erase);
     elements.notesButton.addEventListener("click", toggleNotes);
@@ -979,6 +1039,11 @@ if (typeof document !== "undefined") {
         buildBoard();
         const saved = loadState();
         const linked = gameFromUrl();
+
+        // Games won before the daily record existed still count as done.
+        if (saved && saved.status === "won" && saved.daily === todayString() && !dailyDone()) {
+            writeStored(DAILY_KEY, { date: saved.daily, seconds: saved.elapsedSeconds, hints: saved.hints });
+        }
         const hadParams = window.location.search !== "";
 
         if (hadParams) {
