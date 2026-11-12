@@ -7,8 +7,8 @@
 }
 
 .sudoku-panel {
-    --cell-same: color-mix(in srgb, var(--accent) 20%, var(--surface));
-    --cell-selected: color-mix(in srgb, var(--accent) 36%, var(--surface));
+    --cell-same: #fbdca8;
+    --cell-selected: #f5a623;
     --grid-line: color-mix(in srgb, var(--text) 30%, var(--surface));
     --grid-box: color-mix(in srgb, var(--text) 85%, var(--surface));
 
@@ -21,6 +21,13 @@
     border-radius: 8px;
     color: var(--text);
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+    .sudoku-panel {
+        --cell-same: color-mix(in srgb, #f3a800 34%, var(--surface));
+        --cell-selected: #f3a800;
+    }
 }
 
 .sudoku-panel button {
@@ -161,7 +168,7 @@
     background: var(--surface);
     color: var(--accent-dark);
     font-size: 8cqw;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 1;
     transition: none;
     -webkit-tap-highlight-color: transparent;
@@ -197,16 +204,22 @@
 
 .sudoku-cell.given {
     color: var(--text);
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .sudoku-cell.same-digit {
     background: var(--cell-same);
+    color: var(--text);
 }
 
 .sudoku-cell.selected {
     background: var(--cell-selected);
-    box-shadow: inset 0 0 0 2px var(--accent);
+    color: #1f2726;
+    font-weight: 700;
+}
+
+.sudoku-cell.selected.conflict {
+    color: #7a1208;
 }
 
 .sudoku-cell.conflict {
@@ -222,10 +235,6 @@
     outline-offset: -3px;
 }
 
-.notes-mode .sudoku-cell.selected {
-    box-shadow: inset 0 0 0 3px var(--accent);
-}
-
 .notes {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -234,7 +243,7 @@
     padding: 2px;
     color: var(--text);
     font-size: 3.3cqw;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .notes span {
@@ -274,7 +283,7 @@
     background: var(--surface);
     color: var(--accent-dark);
     font-size: 2.1rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1;
 }
 
