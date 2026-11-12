@@ -8,7 +8,10 @@
 
 .sudoku-panel {
     --cell-same: #fbdca8;
-    --cell-selected: #f5a623;
+    --cell-selected: var(--accent);
+    --cell-on-selected: #fff;
+    --cell-wrong: #f6c9c3;
+    --cell-wrong-text: #b3261a;
     --grid-line: color-mix(in srgb, var(--text) 30%, var(--surface));
     --grid-box: color-mix(in srgb, var(--text) 85%, var(--surface));
 
@@ -26,7 +29,9 @@
 @media (prefers-color-scheme: dark) {
     .sudoku-panel {
         --cell-same: color-mix(in srgb, #f3a800 34%, var(--surface));
-        --cell-selected: #f3a800;
+        --cell-on-selected: #0b1412;
+        --cell-wrong: #4a2420;
+        --cell-wrong-text: #ff8a80;
     }
 }
 
@@ -214,20 +219,21 @@
 
 .sudoku-cell.selected {
     background: var(--cell-selected);
-    color: #1f2726;
+    color: var(--cell-on-selected);
     font-weight: 700;
 }
 
-.sudoku-cell.selected.conflict {
-    color: #7a1208;
-}
-
 .sudoku-cell.conflict {
-    color: var(--btn-locked-text);
+    color: var(--cell-wrong-text);
 }
 
 .sudoku-cell.conflict:not(.selected) {
-    background: var(--btn-locked-bg);
+    background: var(--cell-wrong);
+}
+
+.sudoku-cell.selected.conflict {
+    background: var(--cell-wrong-text);
+    color: var(--cell-on-selected);
 }
 
 .sudoku-panel .sudoku-cell:focus-visible {
