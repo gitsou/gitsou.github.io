@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f6b3a">
+<title>Szklarnia ułamków – gra o ułamkach</title>
+<meta name="description" content="Gra o ułamkach dla dzieci: robot ogrodnik odnawia szklarnię, a gracz dzieli wodę, łata rury i myje szyby.">
+<link rel="canonical" href="https://gitsou.github.io/game7/index.html">
+<link rel="stylesheet" href="css/style.css?v=1">
+<script data-goatcounter="https://cookietower.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<main id="app">
+  <section id="map-screen" class="screen" hidden>
+    <header class="map-head">
+      <h1>Szklarnia ułamków</h1>
+      <p class="map-sub">Pomóż robotowi odnowić starą szklarnię.</p>
+      <p class="map-total" id="map-total"></p>
+    </header>
+    <div id="map" class="map"></div>
+    <footer class="map-foot">
+      <p>Gra zapisuje postęp tylko w tej przeglądarce (local storage). Dane gry nie opuszczają urządzenia. Strona anonimowo i bez ciasteczek liczy odwiedziny (<a href="../about.html#privacy">szczegóły</a>).</p>
+      <p><a href="../experiments.html">‹ Więcej eksperymentów</a></p>
+    </footer>
+  </section>
+
+  <section id="play-screen" class="screen" hidden>
+    <header class="topbar">
+      <button id="btn-map" class="icon-btn" type="button" aria-label="Wróć do mapy">‹ Mapa</button>
+      <h1 id="level-title"></h1>
+      <div id="level-stars" class="top-stars" aria-label="Zdobyte gwiazdki"></div>
+      <button id="btn-hint" class="icon-btn" type="button" aria-label="Podpowiedź">💡<span id="hint-count"></span></button>
+      <button id="btn-reset" class="icon-btn" type="button" aria-label="Zacznij poziom od nowa">↺</button>
+      <button id="btn-sound" class="icon-btn" type="button" aria-label="Dźwięk"></button>
+    </header>
+    <div class="scene-wrap">
+      <div id="scene" class="scene">
+        <svg id="scene-svg" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="bubble" class="bubble" role="status" aria-live="polite"></div>
+        <div id="overlay" class="overlay" hidden></div>
+        <button id="btn-action" class="action" type="button" hidden></button>
+      </div>
+    </div>
+  </section>
+
+  <div id="result" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="result-title">
+    <div class="modal-card">
+      <h2 id="result-title">Brawo!</h2>
+      <p id="result-text"></p>
+      <ul id="result-stars" class="star-list"></ul>
+      <div class="modal-actions">
+        <button type="button" data-act="map">Mapa</button>
+        <button type="button" data-act="again">Jeszcze raz</button>
+        <button type="button" data-act="next" class="primary">Dalej</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/rules.js?v=1"></script>
+<script src="js/levels.js?v=1"></script>
+<script src="js/svg.js?v=1"></script>
+<script src="js/sound.js?v=1"></script>
+<script src="js/mech-window.js?v=1"></script>
+<script src="js/mech-pipe.js?v=1"></script>
+<script src="js/mech-water.js?v=1"></script>
+<script src="js/app.js?v=1"></script>
+</body>
+</html>
