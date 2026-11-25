@@ -7,7 +7,7 @@
 <title>Szklarnia ułamków – gra o ułamkach</title>
 <meta name="description" content="Gra o ułamkach dla dzieci: robot ogrodnik odnawia szklarnię, a gracz dzieli wodę, łata rury i myje szyby.">
 <link rel="canonical" href="https://gitsou.github.io/game7/index.html">
-<link rel="stylesheet" href="css/style.css?v=1">
+<link rel="stylesheet" href="css/style.css?v=3">
 <script data-goatcounter="https://cookietower.goatcounter.com/count"
         async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -34,6 +34,7 @@
       <button id="btn-hint" class="icon-btn" type="button" aria-label="Podpowiedź">💡<span id="hint-count"></span></button>
       <button id="btn-reset" class="icon-btn" type="button" aria-label="Zacznij poziom od nowa">↺</button>
       <button id="btn-sound" class="icon-btn" type="button" aria-label="Dźwięk"></button>
+      <button id="btn-full" class="icon-btn" type="button" aria-label="Pełny ekran" hidden>⛶</button>
     </header>
     <div class="scene-wrap">
       <div id="scene" class="scene">
@@ -41,6 +42,16 @@
         <div id="bubble" class="bubble" role="status" aria-live="polite"></div>
         <div id="overlay" class="overlay" hidden></div>
         <button id="btn-action" class="action" type="button" hidden></button>
+      </div>
+    </div>
+    <div id="rotate" class="rotate" hidden>
+      <div class="rotate-card">
+        <div class="rotate-icon" aria-hidden="true">📱↻</div>
+        <p>Obróć telefon poziomo — plansza będzie dużo większa.</p>
+        <div class="modal-actions">
+          <button type="button" id="rotate-full" class="primary">Pełny ekran</button>
+          <button type="button" id="rotate-skip">Graj tak</button>
+        </div>
       </div>
     </div>
   </section>
@@ -59,13 +70,13 @@
   </div>
 </main>
 
-<script src="js/rules.js?v=1"></script>
-<script src="js/levels.js?v=1"></script>
-<script src="js/svg.js?v=1"></script>
-<script src="js/sound.js?v=1"></script>
-<script src="js/mech-window.js?v=1"></script>
-<script src="js/mech-pipe.js?v=1"></script>
-<script src="js/mech-water.js?v=1"></script>
-<script src="js/app.js?v=1"></script>
+<script src="js/rules.js?v=3"></script>
+<script src="js/levels.js?v=3"></script>
+<script src="js/svg.js?v=3"></script>
+<script src="js/sound.js?v=3"></script>
+<script src="js/mech-window.js?v=3"></script>
+<script src="js/mech-pipe.js?v=3"></script>
+<script src="js/mech-water.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

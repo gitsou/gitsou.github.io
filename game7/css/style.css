@@ -72,7 +72,7 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 
 /* --- Ekran gry -------------------------------------------------------------- */
 
-#play-screen { height: 100dvh; display: flex; flex-direction: column; }
+#play-screen { --bar: 56px; height: 100dvh; display: flex; flex-direction: column; position: relative; }
 .topbar {
   display: flex;
   align-items: center;
@@ -104,7 +104,7 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 .scene {
   position: relative;
   aspect-ratio: 1000 / 640;
-  width: min(100%, calc((100dvh - 70px) * 1000 / 640));
+  width: min(100%, calc((100dvh - var(--bar) - 12px) * 1000 / 640));
   container-type: inline-size;
   border-radius: 18px;
   overflow: hidden;
@@ -185,6 +185,32 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 
 .hfrac { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.05; vertical-align: middle; }
 .hfrac span:first-child { border-bottom: 0.12em solid currentColor; padding: 0 0.15em; }
+
+/* Telefon trzymany poziomo: niski pasek, żeby plansza zajęła cały ekran. */
+@media (max-height: 520px) {
+  #play-screen { --bar: 38px; }
+  .topbar { padding: 2px 8px; gap: 6px; min-height: 38px; }
+  .topbar h1 { font-size: 15px; }
+  .top-stars { font-size: 16px; }
+  .icon-btn { min-height: 34px; min-width: 40px; font-size: 17px; padding: 0 8px; border-radius: 10px; }
+  .scene-wrap { padding: 2px; }
+  .scene { border-radius: 10px; }
+}
+@container (max-width: 700px) {
+  .bubble { width: 33%; padding: 6px 8px; border-width: 2px; }
+  .overlay { width: 34%; }
+}
+
+/* Telefon trzymany pionowo: prośba o obrócenie. */
+.rotate {
+  position: absolute; inset: 0; z-index: 5;
+  display: grid; place-items: center; padding: 20px;
+  background: rgb(233 241 225 / 0.96);
+}
+.rotate-card { text-align: center; max-width: 340px; }
+.rotate-card p { font-size: 20px; font-weight: 700; margin: 0 0 18px; }
+.rotate-icon { font-size: 56px; margin-bottom: 8px; animation: tilt 2s ease-in-out infinite; }
+@keyframes tilt { 50% { transform: rotate(-90deg); } }
 
 /* --- Okno wyników ------------------------------------------------------------- */
 
@@ -338,6 +364,8 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 .beam { fill: rgb(255 230 120 / 0.35); opacity: 0; transition: opacity 0.8s; }
 .lit .beam { opacity: 1; }
 .half-line { stroke: #ffcc33; stroke-width: 6; stroke-dasharray: 12 8; }
+.window-tablet .tablet { stroke-width: 4; }
+.panes { touch-action: none; }
 
 /* Rura */
 .pipe-seg { fill: #b9c9cf; stroke: #7d9199; stroke-width: 3; }
@@ -351,6 +379,8 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 .piece rect { fill: #d6e3e8; stroke: #6f8a94; stroke-width: 3; }
 .piece.placed rect { fill: #c6dde6; }
 .piece.bounce { animation: shake 0.45s; }
+.piece.lifted { filter: drop-shadow(0 8px 6px rgb(0 0 0 / 0.3)); }
+.piece { touch-action: none; }
 .drip { fill: var(--water); animation: drip 0.9s linear infinite; }
 .drip.d2 { animation-delay: 0.3s; }
 .drip.d3 { animation-delay: 0.6s; }

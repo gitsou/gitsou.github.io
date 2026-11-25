@@ -4,7 +4,7 @@
   const GF = window.GF;
   GF.mechanics = GF.mechanics || {};
   const R = GF.rules;
-  const { el, fraction, tween, wait } = GF.svg;
+  const { el, fraction, tween, wait, svgPoint } = GF.svg;
 
   GF.mechanics.pipe = function mountPipe(ctx) {
     const { stage, stats } = ctx;
@@ -67,10 +67,9 @@
       const crate = cratePositions();
       let gx = gx0;
       const draw = (i, x, y, isPlaced) => {
-        const g = el('g', { class: `piece clickable glow${isPlaced ? ' placed' : ''}`, 'data-hint': `piece-${i}`, role: 'button' }, piecesG);
+        const g = el('g', { class: `piece clickable glow${isPlaced ? ' placed' : ''}`, 'data-hint': `piece-${i}`, 'data-piece': i, role: 'button' }, piecesG);
         el('rect', { x, y, width: len(i), height: PH, rx: 6 }, g);
         if (stage.labels || done) fraction(g, R.parse(stage.pieces[i]), x + len(i) / 2, y + PH / 2 - 1, 17);
-        g.addEventListener('click', () => onPiece(i, g));
         return g;
       };
       for (const i of placed) { draw(i, gx, PY - PH / 2, true); gx += len(i); }
@@ -81,7 +80,7 @@
       ctx.applyHints();
     }
 
-    function onPiece(i, g) {
+    function onPiece(i) {
       if (busy || done) return;
       const at = placed.indexOf(i);
       if (at >= 0) {
@@ -94,16 +93,53 @@
         stats.fails++;
         ctx.sound.play('bounce');
         ctx.say(stage.tooLongText, 'sad');
-        g.classList.add('bounce');
-        setTimeout(() => g.classList.remove('bounce'), 500);
+        render();
+        const back = piecesG.querySelector(`[data-piece="${i}"]`);
+        back?.classList.add('bounce');
+        setTimeout(() => back?.classList.remove('bounce'), 500);
         return;
       }
       render();
     }
 
+    // Kawałek można dotknąć (wstawia albo wyjmuje) albo przeciągnąć: ze skrzynki na rurę
+    // albo z rury z powrotem do skrzynki.
+    let drag = null;
+    const nearPipe = (p) => p.y > PY - 90 && p.y < PY + 80 && p.x > PX - 60 && p.x < PX + U + 60;
+    piecesG.addEventListener('pointerdown', (e) => {
+      if (busy || done || !e.isPrimary) return;
+      const g = e.target.closest('[data-piece]');
+      if (!g) return;
+      e.preventDefault();
+      const p = svgPoint(ctx.svg, e);
+      drag = { id: e.pointerId, i: Number(g.dataset.piece), g, x: p.x, y: p.y, moved: false };
+    });
+    const onMove = (e) => {
+      if (!drag || drag.id !== e.pointerId) return;
+      const p = svgPoint(ctx.svg, e);
+      const dx = p.x - drag.x, dy = p.y - drag.y;
+      if (!drag.moved && Math.hypot(dx, dy) < 10) return;
+      if (!drag.moved) { drag.moved = true; piecesG.append(drag.g); drag.g.classList.add('lifted'); }
+      drag.g.setAttribute('transform', `translate(${dx} ${dy})`);
+    };
+    const onUp = (e) => {
+      if (!drag || drag.id !== e.pointerId) return;
+      const d = drag;
+      drag = null;
+      if (e.type !== 'pointerup') { render(); return; }
+      if (!d.moved) { onPiece(d.i, d.g); return; }
+      const p = svgPoint(ctx.svg, e);
+      const isPlaced = placed.includes(d.i);
+      if (nearPipe(p) !== isPlaced) onPiece(d.i, d.g);
+      else render();
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+
     async function release() {
       if (busy || done) return;
-      if (placed.length === 0) { ctx.say('Najpierw dotknij kawałka rury w skrzynce, żeby go wstawić.', 'think'); return; }
+      if (placed.length === 0) { ctx.say('Najpierw przeciągnij kawałek rury ze skrzynki do dziury.', 'think'); return; }
       busy = true;
       const ev = R.checkPipe(stage, placed);
       ctx.sound.play('splash');
@@ -140,6 +176,12 @@
 
     ctx.setAction('💧 Puść wodę', release);
     render();
-    return {};
+    return {
+      destroy() {
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('pointerup', onUp);
+        window.removeEventListener('pointercancel', onUp);
+      },
+    };
   };
 })();

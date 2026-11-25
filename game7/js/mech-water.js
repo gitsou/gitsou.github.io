@@ -440,8 +440,9 @@
         return;
       }
 
-      showLabels(ev);
+      // Przy pytaniu podpisy pojawiają się dopiero po odpowiedzi, żeby jej nie zdradzić.
       if (stage.question) { askQuestion(ev); return; }
+      showLabels(ev);
       finish(ev);
     }
 
@@ -463,6 +464,7 @@
     function askQuestion(ev) {
       phase = 'question';
       const q = stage.question;
+      const answer = q.about ? ev.results.find((r) => r.id === q.about).got : ev.barrel;
       const box = ctx.overlay;
       box.hidden = false;
       box.innerHTML = `<p>${q.text}</p><div class="answers"></div>`;
@@ -475,8 +477,10 @@
         b.setAttribute('aria-label', R.str(f));
         b.addEventListener('click', () => {
           if (phase !== 'question') return;
-          if (R.eq(f, ev.barrel)) {
+          if (R.eq(f, answer)) {
             box.hidden = true;
+            compareG.textContent = '';
+            showLabels(ev);
             finish(ev);
           } else {
             stats.answerFails++;
@@ -484,7 +488,7 @@
             b.classList.add('wrong');
             b.disabled = true;
             ctx.say(q.wrongText, 'think');
-            showCompare(ev.barrel);
+            showCompare(answer);
           }
         });
         answers.append(b);

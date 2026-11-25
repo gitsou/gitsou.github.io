@@ -27,11 +27,43 @@
 
   const chapterOf = (levelId) => DATA.chapters.find((c) => c.levels.some((l) => l.id === levelId));
   const chapterClean = (chapter) => chapter.levels.filter((l) => record(l.id).done).length / chapter.levels.length;
-  const isUnlocked = (chapter, i) => i === 0 || record(chapter.levels[i - 1].id).done;
+  // Pierwszy poziom rozdziału otwiera się po ukończeniu całego poprzedniego rozdziału.
+  const isUnlocked = (chapter, i) => {
+    if (i > 0) return record(chapter.levels[i - 1].id).done;
+    const prev = DATA.chapters[DATA.chapters.indexOf(chapter) - 1];
+    return !prev || chapterClean(prev) === 1;
+  };
 
   function show(name) {
     for (const [k, v] of Object.entries(screens)) v.hidden = k !== name;
+    updateRotate();
   }
+
+  // --- Telefon: obrót i pełny ekran ----------------------------------------------
+
+  const portraitPhone = window.matchMedia('(orientation: portrait) and (max-width: 600px)');
+  const canFull = Boolean(document.fullscreenEnabled && document.documentElement.requestFullscreen);
+  let rotateSkipped = false;
+
+  function updateRotate() {
+    $('#rotate').hidden = screens.play.hidden || rotateSkipped || !portraitPhone.matches;
+  }
+  portraitPhone.addEventListener('change', updateRotate);
+
+  async function goFullscreen() {
+    try {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
+      if (screen.orientation && screen.orientation.lock) await screen.orientation.lock('landscape');
+    } catch { /* przeglądarka nie pozwala: zostaje prośba o obrót */ }
+  }
+  $('#btn-full').hidden = !(canFull && window.matchMedia('(pointer: coarse)').matches);
+  $('#btn-full').addEventListener('click', () => {
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else goFullscreen();
+  });
+  $('#rotate-full').hidden = !canFull;
+  $('#rotate-full').addEventListener('click', goFullscreen);
+  $('#rotate-skip').addEventListener('click', () => { rotateSkipped = true; updateRotate(); });
 
   // --- Mapa -------------------------------------------------------------------
 
@@ -57,7 +89,10 @@
       const done = chapter.levels.filter((l) => record(l.id).done).length;
       const renewed = done === chapter.levels.length;
       card.classList.toggle('renewed', renewed);
-      card.innerHTML = `<h2>${room.name}</h2><p class="room-state">${renewed ? 'Odnowiony! 🌿' : `W ruinie · ${done}/${chapter.levels.length}`}</p>`;
+      const open = isUnlocked(chapter, 0);
+      card.classList.toggle('locked', !open);
+      const state = renewed ? 'Odnowiony! 🌿' : open ? `W ruinie · ${done}/${chapter.levels.length}` : 'Zamknięty · najpierw odnów poprzedni pokój';
+      card.innerHTML = `<h2>${room.name}</h2><p class="room-state">${state}</p>`;
       const list = document.createElement('ol');
       list.className = 'level-list';
       chapter.levels.forEach((level, i) => {
